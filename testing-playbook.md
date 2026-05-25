@@ -1,6 +1,12 @@
 # testing-playbook
 
-## Test-level ladder (low cost -> high cost)
+## 1) Policy levels
+
+- REQUIRED: mandatory for valid execution.
+- RECOMMENDED: default behavior when context allows.
+- OPTIONAL: situational enhancement.
+
+## 2) Test-level ladder (low cost -> high cost)
 
 1. Unit: pure logic/helpers.
 2. Service/integration: APIs, auth, data access, policies.
@@ -9,7 +15,7 @@
 
 REQUIRED: never use a higher-cost level when a lower level can prove the same behavior.
 
-## Scenario baseline
+## 3) Scenario baseline
 
 RECOMMENDED candidates for every matrix:
 - golden path
@@ -22,7 +28,7 @@ RECOMMENDED candidates for every matrix:
 - external failures (timeout/5xx/network/rate limit)
 - malicious payload classes where relevant (XSS/SQLi/injection)
 
-## Scenario checklist model
+## 4) Scenario checklist model
 
 REQUIRED states:
 - `pending`
@@ -38,7 +44,7 @@ REQUIRED execution rules:
 - if one fails, diagnose and fix root cause before moving on
 - never mark `passed` without successful rerun
 
-## Escalation gates
+## 5) Escalation gates
 
 REQUIRED before starting:
 - max paid-test budget per session
@@ -51,7 +57,7 @@ REQUIRED stop conditions:
 - critical dependency unavailable beyond retry window
 - required credential/config missing and cannot be safely provisioned
 
-## Red flags
+## 6) Red flags
 
 | Thought | Reality |
 |---|---|

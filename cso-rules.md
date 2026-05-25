@@ -1,12 +1,12 @@
 # cso-rules
 
-## Policy levels
+## 1) Policy levels
 
 - REQUIRED: mandatory for publish-ready quality.
-- RECOMMENDED: default unless project context justifies deviation.
-- OPTIONAL: only when it adds concrete value.
+- RECOMMENDED: default unless context justifies deviation.
+- OPTIONAL: use only when it adds concrete value.
 
-## Description standard
+## 2) Description standard
 
 Frontmatter `description` is REQUIRED to:
 - start with `Use when...`
@@ -20,7 +20,7 @@ Good:
 Bad:
 - `Use when validating changes by choosing method, creating scenarios, and iterating through failures.`
 
-## Naming standard
+## 3) Naming standard
 
 REQUIRED:
 - use lowercase letters, numbers, hyphens
@@ -29,14 +29,14 @@ REQUIRED:
 RECOMMENDED:
 - avoid vague or overloaded labels
 
-## Keyword coverage
+## 4) Keyword coverage
 
 RECOMMENDED search terms:
 - symptoms: flaky, nondeterministic, race condition
 - artifacts: checklist, regression, escalation
 - testing context: unit, integration, e2e
 
-## Token efficiency
+## 5) Token efficiency
 
 REQUIRED:
 - keep `SKILL.md` focused on contract + execution flow
@@ -45,7 +45,7 @@ REQUIRED:
 RECOMMENDED:
 - move deep detail to companion docs
 
-## Cross-reference rule
+## 6) Cross-reference rule
 
 When another skill is mandatory, write explicitly:
 - `REQUIRED SUB-SKILL: <skill-name>`

@@ -97,3 +97,18 @@ Impact:
 - Easier compliance checks during review.
 Follow-ups:
 - Add objective acceptance rubric mapped to REQUIRED rules.
+
+Date: 2026-05-25
+Version/Tag: v1-doc-hardening-04
+Type: refactor
+Summary: Enforced consistent document structure and sequencing
+Context: Layout and section ordering were uneven across files, raising cognitive load.
+Change:
+- Applied numbered, consistent heading hierarchy in all skill documents.
+- Standardized section order from principle -> policy -> execution -> references.
+- Improved navigation between core and companion docs.
+Impact:
+- More predictable scanning for humans and agents.
+- Lower misread risk from structural inconsistency.
+Follow-ups:
+- Add measurable acceptance rubric tied to sectioned flow.
