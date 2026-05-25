@@ -1,6 +1,6 @@
 {
   "name": "loop-test-skill",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Install the loop-test skill for Codex and Claude Code",
   "license": "MIT",
   "bin": {
