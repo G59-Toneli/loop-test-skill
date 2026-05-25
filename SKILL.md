@@ -5,91 +5,82 @@ description: Use when a feature, bugfix, or refactor needs deterministic end-to-
 
 # loop-test
 
-## 1) Principle
+## 1) Objective
 
-Validate real behavior with the lowest possible cost, without masking bugs.
+Prove real behavior with the lowest-cost test level, without false green.
 
-Loop: scope -> choose test level -> propose scenarios -> user validates scenarios -> execute scenario -> if fail, fix root cause -> rerun -> close with regression.
+Loop: scope -> choose level -> propose matrix -> get approval -> run scenario -> if fail, fix root cause -> rerun same scenario -> final regression.
 
 ## 2) Policy levels
 
-- REQUIRED: mandatory behavior. Violations invalidate execution quality.
-- RECOMMENDED: strong default. Deviate only with explicit reason.
-- OPTIONAL: situational enhancement.
+- REQUIRED: non-negotiable. Violation invalidates execution.
+- RECOMMENDED: default unless a concrete reason is logged.
+- OPTIONAL: only when it adds measurable value.
 
-## 3) Required rules
+## 3) Trigger boundary
 
-- Never force green by weakening assertions, adding fake stabilizers, shrinking scope silently, or abusing skip/xfail.
-- Ask explicit user validation on the scenario matrix before execution.
-- Run full regression after all approved scenarios pass.
+Use when:
+- implemented feature/bugfix/refactor needs deterministic validation
+- user explicitly requests looped validation (`/loop-test`, "validate this", "test until stable")
+- flaky behavior must be converted into deterministic behavior
 
-## 4) Environment compatibility
+Do not use when:
+- only one isolated assertion is needed
+- exploratory debugging has no acceptance contract yet
+- change is visual/copy-only with no behavior impact
+- there is no runnable hypothesis
 
-| Agent | Personal skill path |
-|---|---|
-| Codex | `~/.agents/skills/<skill-name>/SKILL.md` |
-| Claude Code | `~/.claude/skills/<skill-name>/SKILL.md` |
+REQUIRED: if any "do not use" condition is true, abort loop-test and pick a better method.
 
-REQUIRED:
-- Keep instructions tool-agnostic unless a tool is explicitly mandatory.
-- Avoid hardcoding project-private paths in examples.
-- Use placeholders for machine/user-specific locations.
-
-## 5) When to use
-
-- Feature/bugfix/refactor just implemented and needs pre-merge validation.
-- User asks for looped validation (`/loop-test`, "validate this", "test until stable").
-- Flaky behavior must become deterministic via root-cause correction.
-
-## 6) When not to use (strict)
-
-- Single isolated unit assertion with no multi-scenario risk.
-- Exploratory debugging where no acceptance contract exists yet.
-- Pure visual/style checks better handled by UI review.
-- Copy/text tweaks with no behavior change.
-- Cases with no testable hypothesis or no runnable validation path.
-
-REQUIRED: if this section matches the request, do not invoke loop-test.
-
-## 7) Public contract
+## 4) Public contract
 
 Input:
 - change summary
 - minimal context (spec/task/PR/files)
 
-REQUIRED intermediate output:
+Mandatory intermediate output:
 - scenario matrix
-- explicit user validation options: approve/add/remove/edit
+- explicit validation options: `approve`, `add`, `remove`, `edit`
 
-REQUIRED final output:
-- `loop-test report` with test method, coverage, iterations, fixes, escalations, and regression command(s).
+Mandatory final output:
+- `loop-test report` with method, scenarios, failures/fixes, escalations, and regression command(s)
 
-## 8) Mandatory flow
+## 5) Execution flow (mandatory)
 
-1. Understand scope from code + task/spec.
+1. Understand scope from code and task/spec.
 2. Choose the cheapest test level that can prove behavior.
-3. Build initial scenario matrix.
-4. Ask user to approve/add/remove/edit scenarios.
-5. Create checklist from approved scenarios.
-6. Execute sequential fix-test-fix per scenario.
-7. Update scenario status immediately after each run.
-8. Run full regression after all scenarios pass.
-9. Publish final structured report.
+3. Build scenario matrix using `loop-templates.md`.
+4. Ask explicit user approval before running any scenario.
+5. Execute sequentially and update scenario state immediately.
+6. If fail: diagnose root cause, fix, rerun the same scenario.
+7. After all approved scenarios pass, run full regression.
+8. Publish final `loop-test report`.
 
-## 9) Companion docs
+## 6) Definition of done (binary gates)
 
-- `testing-playbook.md` for test-level choice, scenario model, and escalation details.
-- `cso-rules.md` for discovery, naming, and token-efficiency rules.
-- `loop-templates.md` for copy/paste execution templates.
+Loop-test is valid only if all gates pass:
+- RED captured: at least one failing scenario recorded before fix.
+- GREEN proven: same scenario passes after fix.
+- Root cause closed: fix explanation proves causal correction, not symptom patch.
+- Scenario completion: no approved scenario left in `pending` or `running`.
+- Final regression: executed after scenario pass closure.
 
-## 10) Security and privacy
+REQUIRED: if any gate fails, mark execution invalid and escalate.
+
+## 7) Companion docs
+
+- `testing-playbook.md`: test-level ladder, escalation gates, anti-gaming controls.
+- `loop-templates.md`: pressure scenario, rationalization, REFACTOR, and final check templates.
+- `cso-rules.md`: discoverability and token-discipline rules.
+
+## 8) Security and privacy
 
 - REQUIRED: never expose secrets, tokens, credentials, PII, or private endpoints.
 - REQUIRED: use placeholders (`<TEST_ACCOUNT_EMAIL>`, `<API_TOKEN>`, `<PROJECT_PATH>`).
 - REQUIRED: never hit real customer channels in test mode without explicit approval and isolation.
 - RECOMMENDED: avoid sensitive data in logs, artifacts, and screenshots.
 
-## 11) Report template
+## 9) Report template
 
 ```text
 ## loop-test report

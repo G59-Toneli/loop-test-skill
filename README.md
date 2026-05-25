@@ -29,12 +29,20 @@ Use this skill when a change is already implemented and you need rigorous behavi
 
 1. Understand change scope.
 2. Select the cheapest test level that can prove behavior.
-3. Propose a scenario matrix.
+3. Propose a scenario matrix with stable `Scenario ID` and explicit failure signal.
 4. Request explicit user approval for the matrix.
 5. Execute scenarios sequentially with tracked states.
 6. On failure: diagnose root cause, fix, rerun the same scenario.
 7. After all approved scenarios pass: run full regression.
 8. Deliver a structured `loop-test report`.
+
+## Definition of done (must all pass)
+
+- RED captured: at least one approved scenario fails before fix.
+- GREEN validated: same scenario passes after fix.
+- Root cause closed: fix explains causal correction, not symptom masking.
+- Scenario closure: no approved scenario left in `pending`/`running`.
+- Final regression executed after scenario pass closure.
 
 ## Repository structure
 
