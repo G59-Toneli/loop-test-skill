@@ -92,6 +92,7 @@ REQUIRED execution rules:
 REQUIRED before starting:
 - max paid-test budget per session
 - max no-progress iterations per scenario
+- regression tier selected (`targeted`, `suite`, `full`) with justification
 
 REQUIRED stop conditions:
 - no measurable progress after max iterations
@@ -99,6 +100,11 @@ REQUIRED stop conditions:
 - fix requires product/spec decision
 - critical dependency unavailable beyond retry window
 - required credential/config missing and cannot be safely provisioned
+
+RECOMMENDED tier mapping:
+- `targeted`: localized change with low blast radius and no external contract change
+- `suite`: medium blast radius or module-level contract touch
+- `full`: cross-boundary change, auth/data-policy changes, or uncertain blast radius
 
 ## 9) Acceptance rubric (objective)
 
@@ -110,7 +116,7 @@ A loop-test execution is only valid when all REQUIRED checks pass:
 | GREEN validation | Same scenario passes after fix | successful rerun command output + state `passed` |
 | REFACTOR closure | Root cause documented, not symptom patch | loop diary hypothesis/change/result fields filled |
 | Scenario completeness | Every approved scenario ends with terminal state | no scenario left in `pending` or `running` |
-| Final regression | Full regression runs after all scenario passes | regression command + result in final report |
+| Final regression | Selected regression tier runs after all scenario passes | regression command + result in final report |
 
 REQUIRED release condition: all checks above pass, otherwise escalate.
 

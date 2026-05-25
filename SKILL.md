@@ -9,7 +9,7 @@ description: Use when a feature, bugfix, or refactor needs deterministic validat
 
 Prove real behavior with the lowest-cost test level, without false green.
 
-Loop: scope -> choose level -> propose matrix -> get approval -> run scenario -> if fail, fix root cause -> rerun same scenario -> final regression.
+Loop: scope -> choose level -> propose matrix -> get approval -> run scenario -> if fail, fix root cause -> rerun same scenario -> risk-tier regression.
 
 ## 2) Policy levels
 
@@ -57,7 +57,7 @@ Mandatory final output:
    - delegated mode: lock acceptance criteria and proceed if scope is pre-approved.
 5. Execute sequentially and update scenario state immediately.
 6. If fail: diagnose root cause, fix, rerun the same scenario.
-7. After all approved scenarios pass, run full regression.
+7. After all approved scenarios pass, run risk-tier regression (`targeted`, `suite`, or `full`).
 8. Publish final `loop-test report`.
 
 ## 6) Definition of done (binary gates)
@@ -69,7 +69,7 @@ Loop-test is valid only if all gates pass:
 - GREEN proven: same scenario passes after fix.
 - Root cause closed: fix explanation proves causal correction, not symptom patch.
 - Scenario completion: no approved scenario left in `pending` or `running`.
-- Final regression: executed after scenario pass closure.
+- Final regression: risk-tier regression executed after scenario pass closure.
 
 REQUIRED: if any gate fails, mark execution invalid and escalate.
 
