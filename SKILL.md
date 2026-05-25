@@ -59,7 +59,9 @@ Mandatory final output:
 ## 6) Definition of done (binary gates)
 
 Loop-test is valid only if all gates pass:
-- RED captured: at least one failing scenario recorded before fix.
+- RED captured (conditional):
+  - bugfix/refactor: at least one failing scenario recorded before fix.
+  - feature: at least one unmet acceptance scenario or negative-path proof recorded before fix.
 - GREEN proven: same scenario passes after fix.
 - Root cause closed: fix explanation proves causal correction, not symptom patch.
 - Scenario completion: no approved scenario left in `pending` or `running`.

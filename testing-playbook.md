@@ -46,6 +46,7 @@ Every scenario spec MUST include:
 REQUIRED:
 - same `Scenario ID`, success criteria, and test level from RED to GREEN
 - explicit justification if test level changes
+- for feature validations, RED can be unmet acceptance criteria or negative-path proof
 
 ## 5) Scenario baseline
 
@@ -95,7 +96,7 @@ A loop-test execution is only valid when all REQUIRED checks pass:
 
 | Check | Rule | Evidence |
 |---|---|---|
-| RED baseline | At least one failing scenario is captured before fix | failing command output + scenario state `failed` |
+| RED baseline | bugfix/refactor: failing scenario before fix; feature: unmet acceptance or negative-path proof before fix | failing command output + scenario state `failed` |
 | GREEN validation | Same scenario passes after fix | successful rerun command output + state `passed` |
 | REFACTOR closure | Root cause documented, not symptom patch | loop diary hypothesis/change/result fields filled |
 | Scenario completeness | Every approved scenario ends with terminal state | no scenario left in `pending` or `running` |
