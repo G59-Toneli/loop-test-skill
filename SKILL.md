@@ -29,9 +29,17 @@ Loop: scope -> choose test level -> propose scenarios -> user validates scenario
 - User asks for looped validation (`/loop-test`, "validate this", "test until stable").
 - Flaky behavior must become deterministic via root-cause correction.
 
-Do not use for isolated unit-only checks, non-loop debugging, or visual-only UI review.
+## 5) When not to use (strict)
 
-## 5) Public contract
+- Single isolated unit assertion with no multi-scenario risk.
+- Exploratory debugging where no acceptance contract exists yet.
+- Pure visual/style checks better handled by UI review.
+- Copy/text tweaks with no behavior change.
+- Cases with no testable hypothesis or no runnable validation path.
+
+REQUIRED: if this section matches the request, do not invoke loop-test.
+
+## 6) Public contract
 
 Input:
 - change summary
@@ -44,7 +52,7 @@ REQUIRED intermediate output:
 REQUIRED final output:
 - `loop-test report` with test method, coverage, iterations, fixes, escalations, and regression command(s).
 
-## 6) Mandatory flow
+## 7) Mandatory flow
 
 1. Understand scope from code + task/spec.
 2. Choose the cheapest test level that can prove behavior.
@@ -56,19 +64,19 @@ REQUIRED final output:
 8. Run full regression after all scenarios pass.
 9. Publish final structured report.
 
-## 7) Companion docs
+## 8) Companion docs
 
 - `testing-playbook.md` for test-level choice, scenario model, and escalation details.
 - `cso-rules.md` for discovery, naming, and token-efficiency rules.
 
-## 8) Security and privacy
+## 9) Security and privacy
 
 - REQUIRED: never expose secrets, tokens, credentials, PII, or private endpoints.
 - REQUIRED: use placeholders (`<TEST_ACCOUNT_EMAIL>`, `<API_TOKEN>`, `<PROJECT_PATH>`).
 - REQUIRED: never hit real customer channels in test mode without explicit approval and isolation.
 - RECOMMENDED: avoid sensitive data in logs, artifacts, and screenshots.
 
-## 9) Report template
+## 10) Report template
 
 ```text
 ## loop-test report

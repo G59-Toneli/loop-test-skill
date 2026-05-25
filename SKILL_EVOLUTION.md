@@ -127,3 +127,18 @@ Impact:
 - Lower chance of false-positive "done" claims.
 Follow-ups:
 - Add anti-gaming checks for manipulated GREEN outcomes.
+
+Date: 2026-05-25
+Version/Tag: v1-doc-hardening-06
+Type: change
+Summary: Strengthened strict non-usage boundaries
+Context: Overuse risk remained high without explicit disqualifying scenarios.
+Change:
+- Added "When not to use" section with concrete disqualifiers.
+- Included copy-only and non-testable-hypothesis cases as hard exclusions.
+- Added REQUIRED rule to abort loop-test when exclusions match.
+Impact:
+- Lower ritualistic usage and wasted test cycles.
+- Better tool-selection discipline before validation loops.
+Follow-ups:
+- Add compatibility matrix for Claude/Codex specific integration paths.
