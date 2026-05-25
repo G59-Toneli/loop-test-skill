@@ -84,7 +84,23 @@ A loop-test execution is only valid when all REQUIRED checks pass:
 
 REQUIRED release condition: all checks above pass, otherwise escalate.
 
-## 8) Red flags
+## 8) Anti-gaming checks (false GREEN prevention)
+
+REQUIRED integrity checks:
+- Same scenario identity in RED and GREEN (`Scenario ID` unchanged).
+- Same success criteria in RED and GREEN (no weakened assertions).
+- Same test level in RED and GREEN unless explicitly justified and logged.
+- Same failure class resolved (do not swap to another scenario to claim success).
+
+REQUIRED invalidation triggers:
+- assertion weakened after RED without approval
+- scenario renamed/reframed to bypass failure
+- flaky pass claimed from one-off run only
+- skipped failing scenario without escalation
+
+If any invalidation trigger occurs, mark scenario `failed`, log anti-gaming violation, and restart from RED.
+
+## 9) Red flags
 
 | Thought | Reality |
 |---|---|

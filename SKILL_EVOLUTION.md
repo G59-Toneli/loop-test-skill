@@ -187,3 +187,18 @@ Impact:
 - Better evidence quality for audits and reviews.
 Follow-ups:
 - Add anti-gaming rules to prevent false GREEN outcomes.
+
+Date: 2026-05-25
+Version/Tag: v1-doc-hardening-10
+Type: fix
+Summary: Added anti-gaming controls against false GREEN outcomes
+Context: Objective rubric still allowed manipulation if scenario identity/criteria were changed mid-loop.
+Change:
+- Added integrity checks to enforce RED/GREEN scenario equivalence.
+- Added invalidation triggers for weakened assertions, scenario swapping, and one-off flaky claims.
+- Added mandatory reset-to-RED behavior on anti-gaming violations.
+Impact:
+- Higher confidence that GREEN reflects true bug resolution.
+- Reduced risk of manufactured pass results.
+Follow-ups:
+- Periodically sample loop reports to audit anti-gaming compliance.
