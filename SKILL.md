@@ -1,6 +1,6 @@
 ---
 name: loop-test
-description: Use when a feature, bugfix, or refactor needs deterministic end-to-end validation through an iterative fix-test-fix loop with explicit scenario approval and escalation controls.
+description: Use when a feature, bugfix, or refactor needs deterministic validation with high regression risk, flaky behavior, or explicit request for looped verification.
 ---
 
 # loop-test

@@ -15,7 +15,7 @@ Frontmatter `description` is REQUIRED to:
 - stay third-person and specific
 
 Good:
-- `Use when a feature, bugfix, or refactor needs deterministic end-to-end validation through iterative fix-test-fix execution.`
+- `Use when a feature, bugfix, or refactor needs deterministic validation with high regression risk or flaky behavior.`
 
 Bad:
 - `Use when validating changes by choosing method, creating scenarios, and iterating through failures.`
