@@ -78,6 +78,7 @@ REQUIRED: if any gate fails, mark execution invalid and escalate.
 - `testing-playbook.md`: test-level ladder, escalation gates, anti-gaming controls.
 - `loop-templates.md`: pressure scenario, rationalization, REFACTOR, and final check templates.
 - `cso-rules.md`: discoverability and token-discipline rules.
+- `SKILL_VALIDATION.md`: empirical RED/GREEN evidence log for skill-level changes.
 
 ## 8) Security and privacy
 

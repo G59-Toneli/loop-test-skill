@@ -51,6 +51,7 @@ Use this skill when a change is already implemented and you need rigorous behavi
 - `loop-templates.md`: execution templates (RED, REFACTOR, checklist).
 - `cso-rules.md`: description/naming standards and token-efficiency rules.
 - `SKILL_EVOLUTION.md`: skill evolution history.
+- `SKILL_VALIDATION.md`: empirical baseline vs compliance validation log.
 
 ## Install this skill in Code Agent (Codex)
 
