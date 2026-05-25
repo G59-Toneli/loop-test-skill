@@ -261,3 +261,22 @@ Impact:
 - Reduced risk of reviewers searching for compatibility rules in the wrong file.
 Follow-ups:
 - Keep evolution entries aligned with file ownership whenever content is moved.
+
+Date: 2026-05-25
+Version/Tag: v2-user-features-01
+Type: change
+Summary: Added user-facing auto flow, profiles, anti-flaky quorum, and decision output
+Context: Existing skill was strong on process rigor but still thin on day-to-day user ergonomics and decision clarity.
+Change:
+- Introduced `/loop-test auto` as default user entrypoint.
+- Added explicit risk classification and fixed execution profiles (`rapido`, `padrao`, `paranoico`).
+- Added adaptive anti-flaky quorum policy (`padrao=2/2`, `paranoico=3/3`) and contradiction handling.
+- Added final decision-state contract (`merge seguro`, `merge com risco`, `nao mergear`) with rationale.
+- Added optional cross-session regression memory format in `loop-memory.md`.
+- Aligned README and templates with risk-tier regression and decision-state output.
+Impact:
+- Users can run loop-test with less setup and fewer judgment gaps.
+- Better reliability against flaky false-green outcomes.
+- Stronger release decisions via explicit merge-state contract.
+Follow-ups:
+- Add empirical validation entries in `SKILL_VALIDATION.md` covering anti-flaky and profile behavior.

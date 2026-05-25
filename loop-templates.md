@@ -1,5 +1,27 @@
 # loop-templates
 
+## Scenario matrix template
+
+```text
+Feature/Change: <name>
+Change type: <feature | bugfix | refactor>
+Execution mode: <interactive | delegated>
+Risk class: <low | medium | high>
+Profile: <rapido | padrao | paranoico>
+Primary test level: <unit | integration | e2e | real dependency>
+Regression tier: <targeted | suite | full>
+
+Scenarios:
+- Scenario ID: <id-01>
+  Name: <clear name>
+  Class: <golden-path | boundary | negative-path | auth | concurrency | idempotency | bug-repro | memory-regression>
+  Trigger: <condition>
+  Failure signal (RED): <assertion/log/state>
+  Pass criteria (GREEN): <verifiable pass rule>
+  Test level: <unit | integration | e2e | real dependency>
+  Status: pending
+```
+
 ## Pressure scenario spec template
 
 ```text
@@ -50,6 +72,25 @@ Retest command: <exact command>
 Retest result: pass | fail
 ```
 
+## Anti-flaky evidence template
+
+```text
+Scenario ID: <id>
+Profile: <rapido | padrao | paranoico>
+Flaky suspicion trigger:
+- <why this looked flaky>
+Quorum target:
+- <1/1 | 2/2 | 3/3>
+Reruns:
+- run 1: pass | fail (<evidence ref>)
+- run 2: pass | fail (<evidence ref>)
+- run 3: pass | fail (<evidence ref>)
+Conclusion:
+- stable-pass | unstable-fail | escalate
+Action:
+- <next step>
+```
+
 ## REFACTOR evidence template
 
 ```text
@@ -71,9 +112,13 @@ Verification:
 ## Final checklist template
 
 ```text
+[ ] Risk class and profile recorded
+[ ] Scenario matrix approved/locked per mode
 [ ] RED baseline captured
 [ ] GREEN rerun passed on same scenario
+[ ] Anti-flaky quorum satisfied when applicable
 [ ] REFACTOR evidence logged
 [ ] Scenario terminal state set
-[ ] Final full regression passed
+[ ] Final risk-tier regression passed
+[ ] Decision state emitted (merge seguro | merge com risco | nao mergear)
 ```

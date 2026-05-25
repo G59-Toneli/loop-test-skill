@@ -1,13 +1,24 @@
 # loop-test
 
-Public skill for deterministic validation of feature, bugfix, and refactor changes through a **fix -> test -> fix** loop, with scenario control, evidence, and final regression.
+Public skill for deterministic validation of feature, bugfix, and refactor changes through a **fix -> test -> fix** loop, with scenario control, anti-flaky checks, and decision-ready output.
 
 ## What this skill solves
 
 - Prevents false green results (tests passing while bugs are masked).
 - Enforces root-cause fixes instead of cosmetic patches.
-- Keeps execution traceable with a scenario checklist and explicit states.
+- Keeps execution traceable with a scenario matrix and explicit states.
 - Standardizes escalation when real blockers happen (budget, dependencies, product decision).
+- Returns a merge decision users can act on: `merge seguro | merge com risco | nao mergear`.
+
+## Core user features
+
+- `/loop-test auto`: prompt-first guided validation flow with minimal required input.
+- Automatic test-level selection: chooses the cheapest level that can prove behavior.
+- Risk-aware scenario matrix: prioritizes high-value scenarios by change type and risk.
+- Execution profiles: `rapido`, `padrao`, `paranoico`.
+- Anti-flaky policy: adaptive quorum (`padrao=2/2`, `paranoico=3/3`) for unstable scenarios.
+- Optional regression memory (`loop-memory.md`) for cross-session reuse.
+- Structured final report with decision, evidence, residual risks, and regression commands.
 
 ## When to use
 
@@ -16,7 +27,7 @@ Use this skill when a change is already implemented and you need rigorous behavi
 - new feature with regression risk
 - bugfix with flaky/non-deterministic history
 - refactor that may break an external contract
-- explicit request for looped validation (`/loop-test`, "validate this", "test until stable")
+- explicit request for looped validation (`/loop-test`, `/loop-test auto`, "validate this", "test until stable")
 
 ## When **not** to use
 
@@ -27,14 +38,16 @@ Use this skill when a change is already implemented and you need rigorous behavi
 
 ## Mandatory flow (summary)
 
-1. Understand change scope.
-2. Select the cheapest test level that can prove behavior.
-3. Propose a scenario matrix with stable `Scenario ID` and explicit failure signal.
-4. Request explicit user approval for the matrix.
-5. Execute scenarios sequentially with tracked states.
-6. On failure: diagnose root cause, fix, rerun the same scenario.
-7. After all approved scenarios pass: run full regression.
-8. Deliver a structured `loop-test report`.
+1. Run `/loop-test auto` with change summary and change type.
+2. Classify risk and select profile (`rapido|padrao|paranoico`).
+3. Select the cheapest test level that can prove behavior.
+4. Propose scenario matrix with stable `Scenario ID` and explicit failure signal.
+5. Request explicit matrix approval (interactive) or lock criteria/scope (delegated).
+6. Execute scenarios sequentially with tracked states.
+7. On failure: diagnose root cause, fix, rerun the same scenario.
+8. Apply anti-flaky quorum when instability appears.
+9. Run risk-tier regression (`targeted|suite|full`) after scenario closure.
+10. Deliver `loop-test report` with decision state.
 
 ## Definition of done (must all pass)
 
@@ -42,13 +55,15 @@ Use this skill when a change is already implemented and you need rigorous behavi
 - GREEN validated: same scenario passes after fix.
 - Root cause closed: fix explains causal correction, not symptom masking.
 - Scenario closure: no approved scenario left in `pending`/`running`.
-- Final regression executed after scenario pass closure.
+- Final risk-tier regression executed after scenario pass closure.
+- Decision state emitted: `merge seguro | merge com risco | nao mergear`.
 
 ## Repository structure
 
 - `SKILL.md`: main skill contract and mandatory execution flow.
 - `testing-playbook.md`: test-level ladder, escalation gates, anti-gaming rules.
 - `loop-templates.md`: execution templates (RED, REFACTOR, checklist).
+- `loop-memory.md`: optional memory schema for cross-session non-regression scenarios.
 - `cso-rules.md`: description/naming standards and token-efficiency rules.
 - `SKILL_EVOLUTION.md`: skill evolution history.
 - `SKILL_VALIDATION.md`: empirical baseline vs compliance validation log.
@@ -69,6 +84,7 @@ At minimum, copy `SKILL.md`. It is recommended to include companion docs too:
 
 - `testing-playbook.md`
 - `loop-templates.md`
+- `loop-memory.md`
 - `cso-rules.md`
 
 Example (replace `<REPO_PATH>`):
@@ -77,6 +93,7 @@ Example (replace `<REPO_PATH>`):
 cp <REPO_PATH>/SKILL.md ~/.agents/skills/loop-test/SKILL.md
 cp <REPO_PATH>/testing-playbook.md ~/.agents/skills/loop-test/testing-playbook.md
 cp <REPO_PATH>/loop-templates.md ~/.agents/skills/loop-test/loop-templates.md
+cp <REPO_PATH>/loop-memory.md ~/.agents/skills/loop-test/loop-memory.md
 cp <REPO_PATH>/cso-rules.md ~/.agents/skills/loop-test/cso-rules.md
 ```
 
@@ -93,6 +110,7 @@ You should see `SKILL.md` and the companion docs.
 Invoke the skill by name in the agent prompt:
 
 - `$loop-test`
+- `/loop-test auto`
 - or an explicit equivalent request (e.g. "use loop-test to validate this bugfix")
 
 ## Compatibility

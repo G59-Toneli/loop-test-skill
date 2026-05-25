@@ -6,10 +6,19 @@
 - RECOMMENDED: default behavior when context allows.
 - OPTIONAL: situational enhancement.
 
-## 2) Session tracking contract
+## 2) Command contract
 
 REQUIRED:
-- Track scenario progress in a session task tracker (checklist, table, or todo system).
+- Use `/loop-test auto` as the default entrypoint.
+- Require change summary and change type (`feature | bugfix | refactor`) before scenario execution.
+
+RECOMMENDED:
+- Include touched files/modules to improve risk classification.
+
+## 3) Session tracking contract
+
+REQUIRED:
+- Track scenario progress in a session tracker (checklist, table, or todo system).
 - Update tracker state immediately after each scenario run.
 - Keep evidence links/commands attached to each state transition.
 
@@ -19,7 +28,7 @@ RECOMMENDED:
 OPTIONAL:
 - Use automation to synchronize tracker state with command outputs.
 
-## 3) Execution mode contract
+## 4) Execution mode contract
 
 REQUIRED:
 - `interactive` mode: explicit matrix approval before the first scenario run.
@@ -29,7 +38,22 @@ REQUIRED:
 RECOMMENDED:
 - Default to `interactive` when scope ambiguity exists.
 
-## 4) Test-level ladder (low cost -> high cost)
+## 5) Risk classification and profile policy
+
+Risk signals:
+- `high`: auth/data-policy touch, cross-boundary contracts, uncertain blast radius
+- `medium`: module-level contract change, integration surface changes
+- `low`: localized pure-logic changes with stable interfaces
+
+Profile selection rules:
+- `rapido`: low risk by default, may be user-selected
+- `padrao`: default for medium risk or ambiguous scope
+- `paranoico`: high risk, flaky history, or explicit user request
+
+REQUIRED:
+- Record chosen risk class and profile in the report.
+
+## 6) Test-level ladder (low cost -> high cost)
 
 1. Unit: pure logic/helpers.
 2. Service/integration: APIs, auth, data access, policies.
@@ -38,7 +62,23 @@ RECOMMENDED:
 
 REQUIRED: never use a higher-cost level when a lower level can prove the same behavior.
 
-## 5) Pressure scenario contract (required fields)
+## 7) Scenario matrix policy
+
+REQUIRED candidates in the matrix:
+- golden path
+- one boundary/input-quality scenario
+- one negative-path or external failure scenario
+
+Conditional required candidates:
+- include authorization boundary if auth/policy surface changed
+- include idempotency/retry if write/reprocess behavior changed
+- include concurrency/race if async/shared-state behavior changed
+- include bug reproduction scenario for bugfix changes
+
+RECOMMENDED:
+- Add relevant scenarios from `loop-memory.md` when present.
+
+## 8) Pressure scenario contract (required fields)
 
 Every scenario spec MUST include:
 
@@ -58,7 +98,7 @@ REQUIRED:
 - explicit justification if test level changes
 - for feature validations, RED can be unmet acceptance criteria or negative-path proof
 
-## 6) Scenario baseline
+## 9) Scenario baseline
 
 RECOMMENDED candidates for every matrix:
 - golden path
@@ -71,7 +111,7 @@ RECOMMENDED candidates for every matrix:
 - external failures (timeout/5xx/network/rate limit)
 - malicious payload classes where relevant (XSS/SQLi/injection)
 
-## 7) Scenario checklist model
+## 10) Scenario checklist model
 
 REQUIRED states:
 - `pending`
@@ -87,7 +127,23 @@ REQUIRED execution rules:
 - if one fails, diagnose and fix root cause before moving on
 - never mark `passed` without successful rerun
 
-## 8) Escalation gates
+## 11) Anti-flaky policy
+
+Flaky suspicion triggers:
+- same scenario alternates between pass/fail without code/config change
+- time-sensitive assertions pass only after arbitrary sleep/retry
+- one-off pass after prior deterministic failure
+
+REQUIRED quorum by profile:
+- `rapido`: 1/1 for non-suspect scenarios, escalate on flaky suspicion
+- `padrao`: 2/2 for flaky-suspect scenarios
+- `paranoico`: 3/3 for flaky-suspect scenarios
+
+REQUIRED:
+- Do not promote scenario to `passed` if quorum is not satisfied.
+- If contradictory reruns persist after quorum attempt, mark `failed` and reopen root-cause loop.
+
+## 12) Escalation gates
 
 REQUIRED before starting:
 - max paid-test budget per session
@@ -110,7 +166,7 @@ RECOMMENDED tier mapping:
 - `suite`: medium blast radius or module-level contract touch
 - `full`: cross-boundary change, auth/data-policy changes, or uncertain blast radius
 
-## 9) Acceptance rubric (objective)
+## 13) Acceptance rubric (objective)
 
 A loop-test execution is only valid when all REQUIRED checks pass:
 
@@ -121,10 +177,21 @@ A loop-test execution is only valid when all REQUIRED checks pass:
 | REFACTOR closure | Root cause documented, not symptom patch | loop diary hypothesis/change/result fields filled |
 | Scenario completeness | Every approved scenario ends with terminal state | no scenario left in `pending` or `running` |
 | Final regression | Selected regression tier runs after all scenario passes | regression command + result in final report |
+| Decision state | Final decision emitted with rationale | one of `merge seguro | merge com risco | nao mergear` plus reasons |
 
 REQUIRED release condition: all checks above pass, otherwise escalate.
 
-## 10) Anti-gaming checks (false GREEN prevention)
+## 14) Decision-state policy
+
+Decision rules:
+- `merge seguro`: all required gates pass and no critical residual risk remains
+- `merge com risco`: required gates pass, but explicit non-critical residual risks remain
+- `nao mergear`: required gate fails, unresolved flakiness, or critical blocker remains
+
+REQUIRED:
+- Include actionable next step for any `merge com risco` or `nao mergear` decision.
+
+## 15) Anti-gaming checks (false GREEN prevention)
 
 REQUIRED integrity checks:
 - Same scenario identity in RED and GREEN (`Scenario ID` unchanged).
@@ -140,7 +207,7 @@ REQUIRED invalidation triggers:
 
 If any invalidation trigger occurs, mark scenario `failed`, log anti-gaming violation, and restart from RED.
 
-## 11) Red flags
+## 16) Red flags
 
 | Thought | Reality |
 |---|---|
