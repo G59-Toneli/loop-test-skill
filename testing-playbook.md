@@ -28,7 +28,26 @@ OPTIONAL:
 
 REQUIRED: never use a higher-cost level when a lower level can prove the same behavior.
 
-## 4) Scenario baseline
+## 4) Pressure scenario contract (required fields)
+
+Every scenario spec MUST include:
+
+| Field | Rule |
+|---|---|
+| `Scenario ID` | Stable ID reused in RED and GREEN |
+| `Trigger` | Condition that activates the scenario |
+| `Expected behavior` | Verifiable outcome (not vague intent) |
+| `Failure signal` | Concrete assertion/log/state showing RED |
+| `Pressure type` | Time, sunk-cost, authority, or exhaustion |
+| `Countermeasure` | Rule that blocks the expected rationalization |
+| `Result` | `pending/running/passed/failed/blocked/skipped-with-reason` |
+| `Evidence` | Command + output/log reference for each transition |
+
+REQUIRED:
+- same `Scenario ID`, success criteria, and test level from RED to GREEN
+- explicit justification if test level changes
+
+## 5) Scenario baseline
 
 RECOMMENDED candidates for every matrix:
 - golden path
@@ -41,7 +60,7 @@ RECOMMENDED candidates for every matrix:
 - external failures (timeout/5xx/network/rate limit)
 - malicious payload classes where relevant (XSS/SQLi/injection)
 
-## 5) Scenario checklist model
+## 6) Scenario checklist model
 
 REQUIRED states:
 - `pending`
@@ -57,7 +76,7 @@ REQUIRED execution rules:
 - if one fails, diagnose and fix root cause before moving on
 - never mark `passed` without successful rerun
 
-## 6) Escalation gates
+## 7) Escalation gates
 
 REQUIRED before starting:
 - max paid-test budget per session
@@ -70,7 +89,7 @@ REQUIRED stop conditions:
 - critical dependency unavailable beyond retry window
 - required credential/config missing and cannot be safely provisioned
 
-## 7) Acceptance rubric (objective)
+## 8) Acceptance rubric (objective)
 
 A loop-test execution is only valid when all REQUIRED checks pass:
 
@@ -84,7 +103,7 @@ A loop-test execution is only valid when all REQUIRED checks pass:
 
 REQUIRED release condition: all checks above pass, otherwise escalate.
 
-## 8) Anti-gaming checks (false GREEN prevention)
+## 9) Anti-gaming checks (false GREEN prevention)
 
 REQUIRED integrity checks:
 - Same scenario identity in RED and GREEN (`Scenario ID` unchanged).
@@ -100,7 +119,7 @@ REQUIRED invalidation triggers:
 
 If any invalidation trigger occurs, mark scenario `failed`, log anti-gaming violation, and restart from RED.
 
-## 9) Red flags
+## 10) Red flags
 
 | Thought | Reality |
 |---|---|

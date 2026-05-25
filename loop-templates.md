@@ -1,5 +1,23 @@
 # loop-templates
 
+## Pressure scenario spec template
+
+```text
+Scenario ID: <stable-id>
+Scenario Name: <clear-name>
+Trigger: <when this scenario must run>
+Expected behavior: <verifiable expected outcome>
+Failure signal (RED): <assertion/log/state that proves failure>
+Pressure type: <time | sunk-cost | authority | exhaustion>
+Expected rationalization: <likely shortcut/excuse>
+Countermeasure rule: <explicit rule that blocks shortcut>
+Test level: <unit | integration | e2e | real dependency>
+Evidence references:
+- RED command + output
+- GREEN rerun command + output
+Status: pending | running | passed | failed | blocked | skipped-with-reason
+```
+
 ## RED scenario template
 
 ```text
