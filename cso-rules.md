@@ -40,7 +40,7 @@ RECOMMENDED search terms:
 - symptoms: flaky, nondeterministic, race condition
 - artifacts: matrix, checklist, regression, escalation, merge decision
 - testing context: unit, integration, e2e, risk-tier
-- command/ux terms: /loop-test auto, profile, quorum, deterministic validation
+- command/ux terms: /loop-test, pre-test grill, risk map, profile, quorum, deterministic validation
 
 ## 5) Token efficiency
 

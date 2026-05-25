@@ -14,7 +14,7 @@ loop-test-skill --agent both --force
 
 Use in agent prompt:
 - `$loop-test`
-- `/loop-test auto`
+- `/loop-test`
 
 ## What this skill solves
 
@@ -26,7 +26,8 @@ Use in agent prompt:
 
 ## Core user features
 
-- `/loop-test auto`: prompt-first guided validation flow with minimal required input.
+- `/loop-test`: single-entry prompt-first validation flow with minimal required input.
+- Pre-Test Grill: mandatory domain-by-domain risk interrogation before matrix generation.
 - Automatic test-level selection: chooses the cheapest level that can prove behavior.
 - Risk-aware scenario matrix: prioritizes high-value scenarios by change type and risk.
 - Execution profiles: `rapido`, `padrao`, `paranoico`.
@@ -41,7 +42,7 @@ Use this skill when a change is already implemented and you need rigorous behavi
 - new feature with regression risk
 - bugfix with flaky/non-deterministic history
 - refactor that may break an external contract
-- explicit request for looped validation (`/loop-test`, `/loop-test auto`, "validate this", "test until stable")
+- explicit request for looped validation (`/loop-test`, "validate this", "test until stable")
 
 ## When **not** to use
 
@@ -52,16 +53,18 @@ Use this skill when a change is already implemented and you need rigorous behavi
 
 ## Mandatory flow (summary)
 
-1. Run `/loop-test auto` with change summary and change type.
+1. Run `/loop-test` with change summary and change type.
 2. Classify risk and select profile (`rapido|padrao|paranoico`).
-3. Select the cheapest test level that can prove behavior.
-4. Propose scenario matrix with stable `Scenario ID` and explicit failure signal.
-5. Request explicit matrix approval (interactive) or lock criteria/scope (delegated).
-6. Execute scenarios sequentially with tracked states.
-7. On failure: diagnose root cause, fix, rerun the same scenario.
-8. Apply anti-flaky quorum when instability appears.
-9. Run risk-tier regression (`targeted|suite|full`) after scenario closure.
-10. Deliver `loop-test report` with decision state.
+3. Run Pre-Test Grill and produce `grill summary + risk map`.
+4. Approve grill output (interactive) or lock assumptions with risk impact (delegated).
+5. Select the cheapest test level that can prove behavior.
+6. Propose scenario matrix with stable `Scenario ID` and explicit failure signal.
+7. Request explicit matrix approval (interactive) or lock criteria/scope (delegated).
+8. Execute scenarios sequentially with tracked states.
+9. On failure: diagnose root cause, fix, rerun the same scenario.
+10. Apply anti-flaky quorum when instability appears.
+11. Run risk-tier regression (`targeted|suite|full`) after scenario closure.
+12. Deliver `loop-test report` with decision state.
 
 ## Definition of done (must all pass)
 
@@ -71,12 +74,13 @@ Use this skill when a change is already implemented and you need rigorous behavi
 - Scenario closure: no approved scenario left in `pending`/`running`.
 - Final risk-tier regression executed after scenario pass closure.
 - Decision state emitted: `merge seguro | merge com risco | nao mergear`.
+- Pre-Test Grill gate passed before matrix generation.
 
 ## Repository structure
 
 - `SKILL.md`: main skill contract and mandatory execution flow.
-- `testing-playbook.md`: test-level ladder, escalation gates, anti-gaming rules.
-- `loop-templates.md`: execution templates (RED, REFACTOR, checklist).
+- `testing-playbook.md`: pre-test grill policy, test-level ladder, escalation gates, anti-gaming rules.
+- `loop-templates.md`: grill summary, scenario matrix, and execution templates (RED, REFACTOR, checklist).
 - `loop-memory.md`: optional memory schema for cross-session non-regression scenarios.
 - `cso-rules.md`: description/naming standards and token-efficiency rules.
 - `SKILL_VALIDATION.md`: empirical baseline vs compliance validation log.
@@ -153,7 +157,8 @@ You should see `SKILL.md` and the companion docs.
 Invoke the skill by name in the agent prompt:
 
 - `$loop-test`
-- `/loop-test auto`
+- `/loop-test`
+- `/loop-test auto` (legacy alias)
 - or an explicit equivalent request (e.g. "use loop-test to validate this bugfix")
 
 ## Compatibility

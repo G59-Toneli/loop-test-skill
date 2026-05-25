@@ -1,5 +1,62 @@
 # loop-templates
 
+## Grill summary + risk map template
+
+```text
+Feature/Change: <name>
+Change type: <feature | bugfix | refactor>
+Execution mode: <interactive | delegated>
+Risk class: <low | medium | high>
+Profile: <rapido | padrao | paranoico>
+
+Block decisions:
+- Block: contract/api
+  Decision: <resolved decision>
+  Evidence source: <code | context | user input | assumption>
+  Assumption: <none | explicit assumption>
+  Risk impact: <low | medium | high>
+  Scenario derivation: <required | optional | none>
+
+- Block: data/state
+  Decision: <resolved decision>
+  Evidence source: <code | context | user input | assumption>
+  Assumption: <none | explicit assumption>
+  Risk impact: <low | medium | high>
+  Scenario derivation: <required | optional | none>
+
+- Block: auth/policy
+  Decision: <resolved decision>
+  Evidence source: <code | context | user input | assumption>
+  Assumption: <none | explicit assumption>
+  Risk impact: <low | medium | high>
+  Scenario derivation: <required | optional | none>
+
+- Block: external failures
+  Decision: <resolved decision>
+  Evidence source: <code | context | user input | assumption>
+  Assumption: <none | explicit assumption>
+  Risk impact: <low | medium | high>
+  Scenario derivation: <required | optional | none>
+
+- Block: concurrency/idempotency
+  Decision: <resolved decision>
+  Evidence source: <code | context | user input | assumption>
+  Assumption: <none | explicit assumption>
+  Risk impact: <low | medium | high>
+  Scenario derivation: <required | optional | none>
+
+- Block: observability/recovery
+  Decision: <resolved decision>
+  Evidence source: <code | context | user input | assumption>
+  Assumption: <none | explicit assumption>
+  Risk impact: <low | medium | high>
+  Scenario derivation: <required | optional | none>
+
+Gate status:
+- Interactive approval: <approved | needs-edit>
+- Delegated assumption lock: <locked | blocked>
+```
+
 ## Scenario matrix template
 
 ```text
@@ -10,15 +67,17 @@ Risk class: <low | medium | high>
 Profile: <rapido | padrao | paranoico>
 Primary test level: <unit | integration | e2e | real dependency>
 Regression tier: <targeted | suite | full>
+Source grill artifact: <reference>
 
 Scenarios:
 - Scenario ID: <id-01>
   Name: <clear name>
-  Class: <golden-path | boundary | negative-path | auth | concurrency | idempotency | bug-repro | memory-regression>
+  Class: <golden-path | boundary | negative-path | auth | concurrency | idempotency | bug-repro | memory-regression | assumption-validation>
   Trigger: <condition>
   Failure signal (RED): <assertion/log/state>
   Pass criteria (GREEN): <verifiable pass rule>
   Test level: <unit | integration | e2e | real dependency>
+  Derived from: <block/risk/assumption>
   Status: pending
 ```
 
@@ -113,6 +172,8 @@ Verification:
 
 ```text
 [ ] Risk class and profile recorded
+[ ] Grill summary + risk map created
+[ ] Grill gate approved/locked per mode
 [ ] Scenario matrix approved/locked per mode
 [ ] RED baseline captured
 [ ] GREEN rerun passed on same scenario

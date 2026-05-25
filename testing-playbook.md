@@ -9,7 +9,7 @@
 ## 2) Command contract
 
 REQUIRED:
-- Use `/loop-test auto` as the default entrypoint.
+- Use `/loop-test` as the default entrypoint.
 - Require change summary and change type (`feature | bugfix | refactor`) before scenario execution.
 
 RECOMMENDED:
@@ -18,8 +18,8 @@ RECOMMENDED:
 ## 3) Session tracking contract
 
 REQUIRED:
-- Track scenario progress in a session tracker (checklist, table, or todo system).
-- Update tracker state immediately after each scenario run.
+- Track progress in a session tracker (checklist, table, or todo system).
+- Update tracker state immediately after each transition.
 - Keep evidence links/commands attached to each state transition.
 
 RECOMMENDED:
@@ -31,8 +31,8 @@ OPTIONAL:
 ## 4) Execution mode contract
 
 REQUIRED:
-- `interactive` mode: explicit matrix approval before the first scenario run.
-- `delegated` mode: acceptance criteria and scope must be locked before execution.
+- `interactive` mode: explicit approval gates before execution phases.
+- `delegated` mode: acceptance criteria and scope must be locked before scenario execution.
 - Record selected mode in the final report.
 
 RECOMMENDED:
@@ -53,7 +53,70 @@ Profile selection rules:
 REQUIRED:
 - Record chosen risk class and profile in the report.
 
-## 6) Test-level ladder (low cost -> high cost)
+## 6) Pre-test grill policy
+
+Pre-test grill is REQUIRED for `/loop-test` before scenario matrix generation.
+
+Required domain blocks:
+1. contract/api
+2. data/state
+3. auth/policy
+4. external failures
+5. concurrency/idempotency
+6. observability/recovery
+
+REQUIRED:
+- Walk all six blocks before matrix generation.
+- For each unresolved question, provide a recommended default.
+- If a question can be answered from code/context, resolve it without asking the user.
+
+## 7) Grill interaction rules
+
+`interactive` mode:
+- Ask and resolve decisions in domain blocks.
+- Present `grill summary + risk map`.
+- Require explicit approval (`approve | edit | add risk | add assumption`) before generating matrix.
+
+`delegated` mode:
+- Do not block on missing non-critical answers.
+- Apply secure defaults and log assumptions with risk impact.
+- Promote unresolved high-impact ambiguity to blocking condition.
+
+## 8) Grill budget by profile
+
+REQUIRED limits:
+- `rapido`: 1 decision-question per block (max 6)
+- `padrao`: 2 decision-questions per block (max 12)
+- `paranoico`: 3 decision-questions per block (max 18)
+
+REQUIRED:
+- Respect profile limits unless user explicitly upgrades profile.
+- Prioritize high-risk branches first if budget is exhausted.
+
+## 9) Grill output contract
+
+`grill summary + risk map` MUST include, per block:
+- decision
+- evidence source (`code | context | user input | assumption`)
+- assumption (if any)
+- risk impact (`low | medium | high`)
+- scenario derivation flag (`required | optional | none`)
+
+REQUIRED:
+- No scenario matrix generation before this artifact exists.
+
+## 10) Scenario matrix derivation policy
+
+REQUIRED derivation rules:
+- each `high` risk item in grill output => at least one required scenario
+- each critical assumption => at least one assumption-validation scenario
+- each bugfix reproduction branch => one mandatory RED reproduction scenario
+- each unresolved critical ambiguity => `blocked` before scenario execution
+
+RECOMMENDED:
+- Add relevant scenarios from `loop-memory.md` when present.
+
+## 11) Test-level ladder (low cost -> high cost)
 
 1. Unit: pure logic/helpers.
 2. Service/integration: APIs, auth, data access, policies.
@@ -62,23 +125,7 @@ REQUIRED:
 
 REQUIRED: never use a higher-cost level when a lower level can prove the same behavior.
 
-## 7) Scenario matrix policy
-
-REQUIRED candidates in the matrix:
-- golden path
-- one boundary/input-quality scenario
-- one negative-path or external failure scenario
-
-Conditional required candidates:
-- include authorization boundary if auth/policy surface changed
-- include idempotency/retry if write/reprocess behavior changed
-- include concurrency/race if async/shared-state behavior changed
-- include bug reproduction scenario for bugfix changes
-
-RECOMMENDED:
-- Add relevant scenarios from `loop-memory.md` when present.
-
-## 8) Pressure scenario contract (required fields)
+## 12) Pressure scenario contract (required fields)
 
 Every scenario spec MUST include:
 
@@ -98,7 +145,7 @@ REQUIRED:
 - explicit justification if test level changes
 - for feature validations, RED can be unmet acceptance criteria or negative-path proof
 
-## 9) Scenario baseline
+## 13) Scenario baseline
 
 RECOMMENDED candidates for every matrix:
 - golden path
@@ -111,7 +158,7 @@ RECOMMENDED candidates for every matrix:
 - external failures (timeout/5xx/network/rate limit)
 - malicious payload classes where relevant (XSS/SQLi/injection)
 
-## 10) Scenario checklist model
+## 14) Scenario checklist model
 
 REQUIRED states:
 - `pending`
@@ -127,7 +174,7 @@ REQUIRED execution rules:
 - if one fails, diagnose and fix root cause before moving on
 - never mark `passed` without successful rerun
 
-## 11) Anti-flaky policy
+## 15) Anti-flaky policy
 
 Flaky suspicion triggers:
 - same scenario alternates between pass/fail without code/config change
@@ -143,9 +190,9 @@ REQUIRED:
 - Do not promote scenario to `passed` if quorum is not satisfied.
 - If contradictory reruns persist after quorum attempt, mark `failed` and reopen root-cause loop.
 
-## 12) Escalation gates
+## 16) Escalation gates
 
-REQUIRED before starting:
+REQUIRED before starting scenario execution:
 - max paid-test budget per session
 - max no-progress iterations per scenario
 - regression tier selected (`targeted`, `suite`, `full`) with justification
@@ -160,18 +207,20 @@ REQUIRED stop conditions:
 - fix requires product/spec decision
 - critical dependency unavailable beyond retry window
 - required credential/config missing and cannot be safely provisioned
+- pre-test grill critical ambiguity remains unresolved
 
 RECOMMENDED tier mapping:
 - `targeted`: localized change with low blast radius and no external contract change
 - `suite`: medium blast radius or module-level contract touch
 - `full`: cross-boundary change, auth/data-policy changes, or uncertain blast radius
 
-## 13) Acceptance rubric (objective)
+## 17) Acceptance rubric (objective)
 
 A loop-test execution is only valid when all REQUIRED checks pass:
 
 | Check | Rule | Evidence |
 |---|---|---|
+| Grill gate | pre-test grill output exists and gate passed (`interactive` approved or `delegated` assumptions logged) | grill artifact + gate evidence |
 | RED baseline | bugfix/refactor: failing scenario before fix; feature: unmet acceptance or negative-path proof before fix | failing command output + scenario state `failed` |
 | GREEN validation | Same scenario passes after fix | successful rerun command output + state `passed` |
 | REFACTOR closure | Root cause documented, not symptom patch | loop diary hypothesis/change/result fields filled |
@@ -181,7 +230,7 @@ A loop-test execution is only valid when all REQUIRED checks pass:
 
 REQUIRED release condition: all checks above pass, otherwise escalate.
 
-## 14) Decision-state policy
+## 18) Decision-state policy
 
 Decision rules:
 - `merge seguro`: all required gates pass and no critical residual risk remains
@@ -191,26 +240,29 @@ Decision rules:
 REQUIRED:
 - Include actionable next step for any `merge com risco` or `nao mergear` decision.
 
-## 15) Anti-gaming checks (false GREEN prevention)
+## 19) Anti-gaming checks (false GREEN prevention)
 
 REQUIRED integrity checks:
 - Same scenario identity in RED and GREEN (`Scenario ID` unchanged).
 - Same success criteria in RED and GREEN (no weakened assertions).
 - Same test level in RED and GREEN unless explicitly justified and logged.
 - Same failure class resolved (do not swap to another scenario to claim success).
+- Grill-derived required scenarios are not removed without logged approval.
 
 REQUIRED invalidation triggers:
 - assertion weakened after RED without approval
 - scenario renamed/reframed to bypass failure
 - flaky pass claimed from one-off run only
 - skipped failing scenario without escalation
+- skipping pre-test grill or bypassing grill approval gate
 
 If any invalidation trigger occurs, mark scenario `failed`, log anti-gaming violation, and restart from RED.
 
-## 16) Red flags
+## 20) Red flags
 
 | Thought | Reality |
 |---|---|
+| "We'll save time by skipping grill" | Increases blind spots and false-green probability. |
 | "I'll just add `.skip`" | Hides bug, no root-cause fix. |
 | "I'll add hard sleep" | Masks race condition, increases flakiness. |
 | "I'll lower assertion strength" | Creates false green. |
