@@ -7,11 +7,11 @@ description: Use when a feature, bugfix, or refactor needs deterministic validat
 
 ## 1) Objective
 
-Prove real behavior with the lowest-cost test level, without false green, and produce a merge decision users can act on.
+Prove real behavior through real-user flow simulation first (API and/or browser automation), without false green, and produce a merge decision users can act on.
 
 Primary command: `/loop-test`
 
-Loop: scope -> risk classify -> auto-select profile -> pre-test grill -> propose matrix -> run -> if fail, fix root cause -> rerun same scenario -> risk-tier regression -> decision.
+Loop: context harvest -> risk classify -> auto-select profile -> pre-test grill -> propose matrix -> run -> if fail, fix root cause -> rerun same scenario -> risk-tier regression -> decision.
 
 ## 2) Policy levels
 
@@ -40,14 +40,17 @@ Input:
 - command: `/loop-test`
 - change summary
 - change type: `feature | bugfix | refactor`
-- minimal context (spec/task/PR/files)
+- available context sources (chat, PRD, spec, task, PR/diff, code files, logs)
 - optional execution mode override: `interactive | delegated` (default chosen automatically)
 - optional profile override: `rapido | padrao | paranoico` (default chosen automatically)
 - optional memory path (defaults to `loop-memory.md` if present)
+- optional session board path (defaults to `loop-session.md` if persistence is requested)
 
 Mandatory intermediate output:
-- selected profile and selected test level
+- selected profile and selected validation method
+- `context dossier` (what was analyzed + gaps + assumptions)
 - `grill summary + risk map`
+- `execution to-do board` with explicit state per item (always visible in chat)
 - scenario matrix with stable `Scenario ID`
 - explicit grill validation options: `approve | edit | add risk | add assumption` (interactive mode)
 - explicit validation options: `approve | add | remove | edit` (interactive mode)
@@ -58,24 +61,30 @@ Mandatory final output:
 
 ## 5) Execution flow (mandatory)
 
-1. Understand scope from code and task/spec.
+1. Run context harvest using all available sources (chat, PRD, spec, task, PR/diff, code, logs) and publish `context dossier`.
 2. Classify risk (`low | medium | high`) using `testing-playbook.md` signals.
 3. Select execution profile (`rapido | padrao | paranoico`) automatically from risk and context, unless user overrides.
 4. Run pre-test grill by domain using `testing-playbook.md` and produce `grill summary + risk map`.
 5. Validate grill approval path:
    - interactive mode: ask explicit user approval before generating scenario matrix.
    - delegated mode: apply secure defaults for unresolved questions and log assumptions with risk impact.
-6. Choose the cheapest test level that can prove behavior.
-7. Build scenario matrix from the approved grill output using `loop-templates.md`.
+6. Select real-flow validation method(s) first:
+   - API journey validation
+   - browser journey validation (Playwright and/or MCP Chrome DevTools)
+   - hybrid API + browser when needed for full behavior proof
+7. Build scenario matrix from the approved grill output using `loop-templates.md`, mapping each scenario to method(s).
 8. Load optional regression memory from `loop-memory.md` if present and add relevant non-regression scenarios.
 9. Validate scenario matrix approval path:
    - interactive mode: ask explicit user approval before running any scenario.
    - delegated mode: lock acceptance criteria and proceed if scope is pre-approved.
-10. Execute sequentially and update scenario state immediately.
-11. If fail: diagnose root cause, fix, rerun the same scenario.
-12. If flaky evidence appears, apply anti-flaky quorum policy (`padrao=2/2`, `paranoico=3/3`).
-13. After all approved scenarios pass, run risk-tier regression (`targeted`, `suite`, or `full`).
-14. Publish final `loop-test report`.
+10. Publish/update the execution to-do board before running scenarios:
+   - chat view is mandatory.
+   - file view is optional (`loop-session.md`) when persistence is requested.
+11. Execute sequentially and update scenario and board state immediately.
+12. If fail: diagnose root cause, fix, rerun the same scenario.
+13. If flaky evidence appears, apply anti-flaky quorum policy (`padrao=2/2`, `paranoico=3/3`).
+14. After all approved scenarios pass, run risk-tier regression (`targeted`, `suite`, or `full`).
+15. Publish final `loop-test report`.
 
 ## 6) Definition of done (binary gates)
 
@@ -88,9 +97,17 @@ Loop-test is valid only if all gates pass:
 - Scenario completion: no approved scenario left in `pending` or `running`.
 - Final regression: risk-tier regression executed after scenario pass closure.
 - Decision state emitted: `merge seguro | merge com risco | nao mergear`.
+- Context harvest gate passed:
+  - all available context sources were analyzed.
+  - missing context and assumptions are explicitly logged.
+- Execution to-do board closure:
+  - no execution item left in `pending` or `running`.
 - Pre-test grill gate passed:
   - interactive: grill output approved before matrix generation.
   - delegated: unresolved questions mapped to explicit assumptions with risk impact.
+- Real-flow evidence present:
+  - at least one approved scenario executed with API and/or browser simulation.
+  - if real-flow is not runnable, explicit block or waiver with technical justification is logged.
 
 REQUIRED: if any gate fails, mark execution invalid and escalate.
 
@@ -99,6 +116,7 @@ REQUIRED: if any gate fails, mark execution invalid and escalate.
 - `testing-playbook.md`: pre-test grill policy, test-level ladder, escalation gates, anti-gaming controls.
 - `loop-templates.md`: grill summary, scenario matrix, pressure scenario, rationalization, REFACTOR, and final check templates.
 - `loop-memory.md`: optional memory format for cross-session regression reuse.
+- `loop-session.md`: optional persisted execution to-do board template.
 - `cso-rules.md`: discoverability and token-discipline rules.
 - `SKILL_VALIDATION.md`: empirical RED/GREEN evidence log for skill-level changes.
 
@@ -123,7 +141,7 @@ Decision reason:
   - <short reason 1>
   - <short reason 2>
 Grill artifact: <summary/risk-map reference>
-Method selected: <test level>
+Method selected: <api-journey | browser-journey | hybrid | mixed>
 Regression tier: <targeted | suite | full>
 Scenarios approved: <N>
 Scenarios result: <P passed, F fixed, B blocked/escalated>

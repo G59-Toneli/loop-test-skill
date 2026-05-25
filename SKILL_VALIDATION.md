@@ -213,3 +213,81 @@ Validation run (with change):
 
 Result: pass
 Follow-up: monitor user sessions for confusion between legacy alias and primary command.
+
+Date: 2026-05-25
+Skill version/tag: v5-real-flow-first-01
+Scenario ID: lt-real-flow-priority-001
+Scenario type: discipline
+Pressure type: time
+Change under test: Make real-user flow simulation the primary validation method.
+
+Baseline run (without change):
+- Expected failure: execution can end with only low-level evidence that does not simulate user behavior.
+- Observed behavior: flow and playbook emphasized choosing the cheapest test level.
+- Rationalization observed: "unit/integration is enough; no need to run real journey."
+- Evidence:
+  - prior `SKILL.md` execution step selected cheapest test level.
+  - prior `testing-playbook.md` ladder was cost-first.
+
+Validation run (with change):
+- Expected compliance: at least one approved scenario must use API journey, browser journey, or hybrid method.
+- Observed behavior: contract now requires real-flow evidence as primary proof and blocks unsupported-only closure without waiver.
+- Evidence:
+  - `SKILL.md` objective and flow step 6 (real-flow method selection).
+  - `testing-playbook.md` sections 11 and 17.
+  - `loop-templates.md` execution method fields in matrix/scenario templates.
+
+Result: pass
+Follow-up: collect one real execution sample using hybrid method (API + browser) and add to validation log.
+
+Date: 2026-05-25
+Skill version/tag: v6-execution-board-01
+Scenario ID: lt-visual-todo-board-001
+Scenario type: technique
+Pressure type: combined
+Change under test: Add mandatory visual execution to-do board in chat, with optional persisted session file.
+
+Baseline run (without change):
+- Expected failure: scenario state exists but execution progress is hard to scan in a single visual board.
+- Observed behavior: tracker contract was generic and did not require chat-visible board output.
+- Rationalization observed: "state is tracked somewhere; no need for an explicit board."
+- Evidence:
+  - prior `testing-playbook.md` session tracking lacked mandatory board sections.
+  - prior templates had no execution-board artifact.
+
+Validation run (with change):
+- Expected compliance: execution board is visible in chat and can be persisted to `loop-session.md` when needed.
+- Observed behavior: contract now requires chat board, board state updates, and optional persisted board template.
+- Evidence:
+  - `SKILL.md` mandatory intermediate output and execution flow step for board publication.
+  - `testing-playbook.md` sections 3 and 3.1.
+  - `loop-templates.md` execution to-do board template.
+  - `loop-session.md` persisted board template.
+
+Result: pass
+Follow-up: add one captured real run with board snapshots across state transitions.
+
+Date: 2026-05-25
+Skill version/tag: v7-context-harvest-01
+Scenario ID: lt-context-harvest-gate-001
+Scenario type: discipline
+Pressure type: combined
+Change under test: Require full context harvest before grill/matrix/test execution.
+
+Baseline run (without change):
+- Expected failure: test scenarios may be generated from partial understanding of feature goals.
+- Observed behavior: context expectation existed but no explicit source sweep gate or dossier artifact.
+- Rationalization observed: "I already understand enough from the last message."
+- Evidence:
+  - prior flow did not require context dossier before grill/matrix.
+
+Validation run (with change):
+- Expected compliance: available sources are analyzed first and assumptions are explicitly logged before scenario design.
+- Observed behavior: contract now mandates context harvest, source list, and context gate in acceptance rubric.
+- Evidence:
+  - `SKILL.md` execution flow step 1 and mandatory intermediate output.
+  - `testing-playbook.md` section 2.1 and acceptance check for context harvest gate.
+  - `loop-templates.md` context dossier template.
+
+Result: pass
+Follow-up: add real run sample with PRD+spec+diff-derived acceptance criteria.

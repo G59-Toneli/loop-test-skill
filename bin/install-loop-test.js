@@ -14,6 +14,7 @@ const REQUIRED_FILES = [
   "testing-playbook.md",
   "loop-templates.md",
   "loop-memory.md",
+  "loop-session.md",
   "cso-rules.md",
   "SKILL_VALIDATION.md"
 ];

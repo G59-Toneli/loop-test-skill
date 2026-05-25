@@ -15,18 +15,67 @@ REQUIRED:
 RECOMMENDED:
 - Include touched files/modules to improve risk classification.
 
+## 2.1) Context harvest policy
+
+Context harvest is REQUIRED before grill and scenario matrix generation.
+
+Required source sweep (use whatever is available):
+- chat context
+- PRD
+- technical spec
+- task/ticket
+- PR/diff and changed files
+- execution logs/errors
+
+REQUIRED:
+- publish a `context dossier` with:
+  - sources analyzed
+  - objective and acceptance criteria extracted
+  - constraints and non-goals identified
+  - missing context list
+  - explicit assumptions adopted
+- no scenario matrix generation before context dossier exists.
+
+RECOMMENDED:
+- when source exists but is not read, log reason explicitly.
+
 ## 3) Session tracking contract
 
 REQUIRED:
-- Track progress in a session tracker (checklist, table, or todo system).
+- Track progress in an execution to-do board (checklist/table with explicit states).
+- Keep the board visible in chat output during execution.
 - Update tracker state immediately after each transition.
 - Keep evidence links/commands attached to each state transition.
 
 RECOMMENDED:
 - Use the environment-native tracker when available.
+- Persist the board in `loop-session.md` when persistence/history is useful.
 
 OPTIONAL:
 - Use automation to synchronize tracker state with command outputs.
+
+## 3.1) Execution to-do board contract
+
+REQUIRED board sections:
+- setup (scope, mode, profile, method)
+- context harvest gate
+- pre-test grill gate
+- scenario execution items
+- regression item
+- final decision item
+
+REQUIRED board states:
+- `pending`
+- `running`
+- `passed`
+- `failed`
+- `blocked`
+- `skipped-with-reason`
+
+REQUIRED:
+- one board line per approved scenario (`Scenario ID`).
+- board refresh after every scenario transition.
+- final report must reconcile board terminal states.
 
 ## 4) Execution mode contract
 
@@ -112,18 +161,27 @@ REQUIRED derivation rules:
 - each critical assumption => at least one assumption-validation scenario
 - each bugfix reproduction branch => one mandatory RED reproduction scenario
 - each unresolved critical ambiguity => `blocked` before scenario execution
+- at least one primary scenario must be mapped to real-flow validation (`api-journey` and/or `browser-journey`)
+- context-dossier assumptions must map to explicit scenario coverage or accepted waivers
 
 RECOMMENDED:
 - Add relevant scenarios from `loop-memory.md` when present.
 
-## 11) Test-level ladder (low cost -> high cost)
+## 11) Validation method policy (real-flow first)
 
-1. Unit: pure logic/helpers.
-2. Service/integration: APIs, auth, data access, policies.
-3. End-to-end: user journeys crossing boundaries.
-4. Real external dependency: only when mocks hide behavior.
+Primary methods:
+1. `api-journey`: real endpoint flow with realistic request/response sequence.
+2. `browser-journey`: UI flow automation (Playwright and/or MCP Chrome DevTools).
+3. `hybrid`: browser + API combined to validate full cross-boundary behavior.
 
-REQUIRED: never use a higher-cost level when a lower level can prove the same behavior.
+Supportive methods:
+4. `service-integration`: lower-level service checks.
+5. `unit`: pure logic/helper checks.
+
+REQUIRED:
+- Use real-flow methods (`api-journey`, `browser-journey`, or `hybrid`) as primary evidence.
+- Supportive methods cannot be the only evidence for user-facing behavior unless no runnable real-flow path exists.
+- If real-flow path is unavailable, log explicit block or waiver with technical reason and owner.
 
 ## 12) Pressure scenario contract (required fields)
 
@@ -135,20 +193,22 @@ Every scenario spec MUST include:
 | `Trigger` | Condition that activates the scenario |
 | `Expected behavior` | Verifiable outcome (not vague intent) |
 | `Failure signal` | Concrete assertion/log/state showing RED |
+| `Execution method` | `api-journey | browser-journey | hybrid | service-integration | unit` |
 | `Pressure type` | Time, sunk-cost, authority, or exhaustion |
 | `Countermeasure` | Rule that blocks the expected rationalization |
 | `Result` | `pending/running/passed/failed/blocked/skipped-with-reason` |
 | `Evidence` | Command + output/log reference for each transition |
 
 REQUIRED:
-- same `Scenario ID`, success criteria, and test level from RED to GREEN
-- explicit justification if test level changes
+- same `Scenario ID`, success criteria, and execution method from RED to GREEN
+- explicit justification if execution method changes
 - for feature validations, RED can be unmet acceptance criteria or negative-path proof
 
 ## 13) Scenario baseline
 
 RECOMMENDED candidates for every matrix:
 - golden path
+- real user journey path
 - empty/null/undefined inputs
 - boundary values
 - unicode/special chars
@@ -208,6 +268,7 @@ REQUIRED stop conditions:
 - critical dependency unavailable beyond retry window
 - required credential/config missing and cannot be safely provisioned
 - pre-test grill critical ambiguity remains unresolved
+- context harvest failed to establish objective/acceptance criteria
 
 RECOMMENDED tier mapping:
 - `targeted`: localized change with low blast radius and no external contract change
@@ -220,7 +281,9 @@ A loop-test execution is only valid when all REQUIRED checks pass:
 
 | Check | Rule | Evidence |
 |---|---|---|
+| Context harvest gate | context dossier exists and covers available sources + assumptions | dossier artifact + source list |
 | Grill gate | pre-test grill output exists and gate passed (`interactive` approved or `delegated` assumptions logged) | grill artifact + gate evidence |
+| Real-flow evidence | at least one approved scenario validated via `api-journey`, `browser-journey`, or `hybrid` | scenario method + execution evidence |
 | RED baseline | bugfix/refactor: failing scenario before fix; feature: unmet acceptance or negative-path proof before fix | failing command output + scenario state `failed` |
 | GREEN validation | Same scenario passes after fix | successful rerun command output + state `passed` |
 | REFACTOR closure | Root cause documented, not symptom patch | loop diary hypothesis/change/result fields filled |
@@ -245,7 +308,7 @@ REQUIRED:
 REQUIRED integrity checks:
 - Same scenario identity in RED and GREEN (`Scenario ID` unchanged).
 - Same success criteria in RED and GREEN (no weakened assertions).
-- Same test level in RED and GREEN unless explicitly justified and logged.
+- Same execution method in RED and GREEN unless explicitly justified and logged.
 - Same failure class resolved (do not swap to another scenario to claim success).
 - Grill-derived required scenarios are not removed without logged approval.
 
@@ -255,6 +318,7 @@ REQUIRED invalidation triggers:
 - flaky pass claimed from one-off run only
 - skipped failing scenario without escalation
 - skipping pre-test grill or bypassing grill approval gate
+- skipping available context source without logging
 
 If any invalidation trigger occurs, mark scenario `failed`, log anti-gaming violation, and restart from RED.
 

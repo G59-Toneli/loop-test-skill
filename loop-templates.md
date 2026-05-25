@@ -1,5 +1,39 @@
 # loop-templates
 
+## Context dossier template
+
+```text
+## context dossier
+
+Feature/Change: <name>
+Change type: <feature | bugfix | refactor>
+
+Sources analyzed:
+- chat: <yes/no + reference>
+- PRD: <yes/no + reference>
+- spec: <yes/no + reference>
+- task/ticket: <yes/no + reference>
+- PR/diff/files: <yes/no + reference>
+- logs/errors: <yes/no + reference>
+
+Objective extracted:
+- <what behavior must work>
+
+Acceptance criteria extracted:
+- <criterion 1>
+- <criterion 2>
+
+Constraints/non-goals:
+- <constraint 1>
+- <non-goal 1>
+
+Missing context:
+- <missing item or none>
+
+Assumptions adopted:
+- <assumption + risk impact + owner>
+```
+
 ## Grill summary + risk map template
 
 ```text
@@ -57,6 +91,31 @@ Gate status:
 - Delegated assumption lock: <locked | blocked>
 ```
 
+## Execution to-do board template
+
+```text
+## loop-test execution board
+
+Session:
+- Feature/Change: <name>
+- Change type: <feature | bugfix | refactor>
+- Execution mode: <interactive | delegated>
+- Profile: <rapido | padrao | paranoico>
+- Primary validation method: <api-journey | browser-journey | hybrid | mixed>
+
+Items:
+- [pending|running|passed|failed|blocked|skipped-with-reason] setup-001: scope/profile/method lock
+- [pending|running|passed|failed|blocked|skipped-with-reason] ctx-001: context harvest gate
+- [pending|running|passed|failed|blocked|skipped-with-reason] grill-001: pre-test grill gate
+- [pending|running|passed|failed|blocked|skipped-with-reason] scn-<id>: <scenario name>
+- [pending|running|passed|failed|blocked|skipped-with-reason] reg-001: risk-tier regression
+- [pending|running|passed|failed|blocked|skipped-with-reason] decision-001: final decision emission
+
+Evidence links:
+- scn-<id> -> <command/log ref>
+- reg-001 -> <command/log ref>
+```
+
 ## Scenario matrix template
 
 ```text
@@ -65,7 +124,8 @@ Change type: <feature | bugfix | refactor>
 Execution mode: <interactive | delegated>
 Risk class: <low | medium | high>
 Profile: <rapido | padrao | paranoico>
-Primary test level: <unit | integration | e2e | real dependency>
+Primary supporting test level: <unit | integration | e2e | real dependency>
+Primary validation method: <api-journey | browser-journey | hybrid | mixed>
 Regression tier: <targeted | suite | full>
 Source grill artifact: <reference>
 
@@ -76,7 +136,8 @@ Scenarios:
   Trigger: <condition>
   Failure signal (RED): <assertion/log/state>
   Pass criteria (GREEN): <verifiable pass rule>
-  Test level: <unit | integration | e2e | real dependency>
+  Execution method: <api-journey | browser-journey | hybrid | service-integration | unit>
+  Test level (supporting): <unit | integration | e2e | real dependency>
   Derived from: <block/risk/assumption>
   Status: pending
 ```
@@ -92,7 +153,8 @@ Failure signal (RED): <assertion/log/state that proves failure>
 Pressure type: <time | sunk-cost | authority | exhaustion>
 Expected rationalization: <likely shortcut/excuse>
 Countermeasure rule: <explicit rule that blocks shortcut>
-Test level: <unit | integration | e2e | real dependency>
+Execution method: <api-journey | browser-journey | hybrid | service-integration | unit>
+Test level (supporting): <unit | integration | e2e | real dependency>
 Evidence references:
 - RED command + output
 - GREEN rerun command + output
@@ -172,8 +234,10 @@ Verification:
 
 ```text
 [ ] Risk class and profile recorded
+[ ] Context dossier created and reviewed
 [ ] Grill summary + risk map created
 [ ] Grill gate approved/locked per mode
+[ ] Execution to-do board visible and synchronized
 [ ] Scenario matrix approved/locked per mode
 [ ] RED baseline captured
 [ ] GREEN rerun passed on same scenario

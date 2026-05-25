@@ -38,9 +38,10 @@ RECOMMENDED:
 
 RECOMMENDED search terms:
 - symptoms: flaky, nondeterministic, race condition
-- artifacts: matrix, checklist, regression, escalation, merge decision
-- testing context: unit, integration, e2e, risk-tier
-- command/ux terms: /loop-test, pre-test grill, risk map, profile, quorum, deterministic validation
+- artifacts: execution board, todo, matrix, checklist, regression, escalation, merge decision
+- artifacts: context dossier, execution board, todo, matrix, checklist, regression, escalation, merge decision
+- testing context: api-journey, browser-journey, hybrid, unit, integration, e2e, risk-tier
+- command/ux terms: /loop-test, context harvest, pre-test grill, risk map, profile, quorum, deterministic validation, playwright, mcp chrome devtools
 
 ## 5) Token efficiency
 
