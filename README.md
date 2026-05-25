@@ -18,6 +18,11 @@ Public reusable skill for rigorous validation loops after implementing a feature
 4. Execute fix->test->fix per scenario.
 5. Publish final structured report with coverage and open escalations.
 
+## Compatibility
+
+- Codex personal skills: `~/.agents/skills/`
+- Claude Code personal skills: `~/.claude/skills/`
+
 ## Privacy and safety
 
 - no private credentials, tokens, or personal data in skill content

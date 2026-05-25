@@ -142,3 +142,18 @@ Impact:
 - Better tool-selection discipline before validation loops.
 Follow-ups:
 - Add compatibility matrix for Claude/Codex specific integration paths.
+
+Date: 2026-05-25
+Version/Tag: v1-doc-hardening-07
+Type: change
+Summary: Added explicit Claude/Codex compatibility guidance
+Context: Mixed environment assumptions can break skill portability and installation.
+Change:
+- Added environment compatibility matrix in SKILL.md.
+- Added path rules to avoid hardcoded private locations.
+- Synced README with agent-specific skill path references.
+Impact:
+- Better cross-agent portability.
+- Lower risk of environment-specific instruction failure.
+Follow-ups:
+- Replace tool-specific task tracking dependency with tool-agnostic rule.

@@ -23,13 +23,25 @@ Loop: scope -> choose test level -> propose scenarios -> user validates scenario
 - Ask explicit user validation on the scenario matrix before execution.
 - Run full regression after all approved scenarios pass.
 
-## 4) When to use
+## 4) Environment compatibility
+
+| Agent | Personal skill path |
+|---|---|
+| Codex | `~/.agents/skills/<skill-name>/SKILL.md` |
+| Claude Code | `~/.claude/skills/<skill-name>/SKILL.md` |
+
+REQUIRED:
+- Keep instructions tool-agnostic unless a tool is explicitly mandatory.
+- Avoid hardcoding project-private paths in examples.
+- Use placeholders for machine/user-specific locations.
+
+## 5) When to use
 
 - Feature/bugfix/refactor just implemented and needs pre-merge validation.
 - User asks for looped validation (`/loop-test`, "validate this", "test until stable").
 - Flaky behavior must become deterministic via root-cause correction.
 
-## 5) When not to use (strict)
+## 6) When not to use (strict)
 
 - Single isolated unit assertion with no multi-scenario risk.
 - Exploratory debugging where no acceptance contract exists yet.
@@ -39,7 +51,7 @@ Loop: scope -> choose test level -> propose scenarios -> user validates scenario
 
 REQUIRED: if this section matches the request, do not invoke loop-test.
 
-## 6) Public contract
+## 7) Public contract
 
 Input:
 - change summary
@@ -52,7 +64,7 @@ REQUIRED intermediate output:
 REQUIRED final output:
 - `loop-test report` with test method, coverage, iterations, fixes, escalations, and regression command(s).
 
-## 7) Mandatory flow
+## 8) Mandatory flow
 
 1. Understand scope from code + task/spec.
 2. Choose the cheapest test level that can prove behavior.
@@ -64,19 +76,19 @@ REQUIRED final output:
 8. Run full regression after all scenarios pass.
 9. Publish final structured report.
 
-## 8) Companion docs
+## 9) Companion docs
 
 - `testing-playbook.md` for test-level choice, scenario model, and escalation details.
 - `cso-rules.md` for discovery, naming, and token-efficiency rules.
 
-## 9) Security and privacy
+## 10) Security and privacy
 
 - REQUIRED: never expose secrets, tokens, credentials, PII, or private endpoints.
 - REQUIRED: use placeholders (`<TEST_ACCOUNT_EMAIL>`, `<API_TOKEN>`, `<PROJECT_PATH>`).
 - REQUIRED: never hit real customer channels in test mode without explicit approval and isolation.
 - RECOMMENDED: avoid sensitive data in logs, artifacts, and screenshots.
 
-## 10) Report template
+## 11) Report template
 
 ```text
 ## loop-test report
