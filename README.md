@@ -1,68 +1,68 @@
 # loop-test
 
-Skill pública para validação determinística de feature, bugfix e refactor via ciclo **fix -> test -> fix**, com controle de cenário, evidência e regressão final.
+Public skill for deterministic validation of feature, bugfix, and refactor changes through a **fix -> test -> fix** loop, with scenario control, evidence, and final regression.
 
-## O que esta skill resolve
+## What this skill solves
 
-- Evita falso verde (passar teste mascarando bug).
-- Força correção de causa raiz em vez de patch cosmético.
-- Mantém execução rastreável com checklist e estados por cenário.
-- Padroniza escalonamento quando há bloqueio real (budget, dependência, decisão de produto).
+- Prevents false green results (tests passing while bugs are masked).
+- Enforces root-cause fixes instead of cosmetic patches.
+- Keeps execution traceable with a scenario checklist and explicit states.
+- Standardizes escalation when real blockers happen (budget, dependencies, product decision).
 
-## Quando usar
+## When to use
 
-Use esta skill quando uma mudança já foi implementada e você precisa validar comportamento real com rigor antes de merge/release:
+Use this skill when a change is already implemented and you need rigorous behavior validation before merge/release:
 
-- nova feature com risco de regressão
-- bugfix com histórico de flakiness/nondeterminismo
-- refactor que pode quebrar contrato externo
-- pedido explícito de validação em loop (`/loop-test`, "valida isso", "testa até estabilizar")
+- new feature with regression risk
+- bugfix with flaky/non-deterministic history
+- refactor that may break an external contract
+- explicit request for looped validation (`/loop-test`, "validate this", "test until stable")
 
-## Quando **não** usar
+## When **not** to use
 
-- teste unitário isolado sem risco multi-cenário
-- debugging exploratório sem contrato de aceitação
-- ajuste puramente visual/textual sem mudança de comportamento
-- caso sem hipótese testável ou sem caminho de execução validável
+- single isolated unit assertion with no multi-scenario risk
+- exploratory debugging without an acceptance contract
+- purely visual/text updates with no behavior change
+- cases with no testable hypothesis or no runnable validation path
 
-## Fluxo obrigatório (resumo)
+## Mandatory flow (summary)
 
-1. Entender escopo da mudança.
-2. Escolher o menor nível de teste que prova o comportamento.
-3. Propor matriz de cenários.
-4. Pedir aprovação explícita da matriz ao usuário.
-5. Executar cenário por cenário com estados rastreáveis.
-6. Se falhar: diagnosticar raiz, corrigir, rerodar o mesmo cenário.
-7. Após todos os aprovados passarem: regressão completa.
-8. Entregar `loop-test report` estruturado.
+1. Understand change scope.
+2. Select the cheapest test level that can prove behavior.
+3. Propose a scenario matrix.
+4. Request explicit user approval for the matrix.
+5. Execute scenarios sequentially with tracked states.
+6. On failure: diagnose root cause, fix, rerun the same scenario.
+7. After all approved scenarios pass: run full regression.
+8. Deliver a structured `loop-test report`.
 
-## Estrutura do repositório
+## Repository structure
 
-- `SKILL.md`: contrato principal da skill e fluxo mandatório.
-- `testing-playbook.md`: ladder de níveis de teste, escalonamento e anti-gaming.
-- `loop-templates.md`: templates operacionais (RED, REFACTOR, checklist).
-- `cso-rules.md`: padrão de descrição/nomeação e regras de eficiência.
-- `SKILL_EVOLUTION.md`: histórico e evolução da skill.
+- `SKILL.md`: main skill contract and mandatory execution flow.
+- `testing-playbook.md`: test-level ladder, escalation gates, anti-gaming rules.
+- `loop-templates.md`: execution templates (RED, REFACTOR, checklist).
+- `cso-rules.md`: description/naming standards and token-efficiency rules.
+- `SKILL_EVOLUTION.md`: skill evolution history.
 
-## Instalação da skill no Code Agent (Codex)
+## Install this skill in Code Agent (Codex)
 
-### 1) Criar diretório de skill
+### 1) Create the skill directory
 
-No ambiente do usuário que vai usar a skill:
+On the target user machine:
 
 ```bash
 mkdir -p ~/.agents/skills/loop-test
 ```
 
-### 2) Copiar os arquivos da skill
+### 2) Copy the skill files
 
-Copie, no mínimo, `SKILL.md`. Recomendado copiar também os companion docs:
+At minimum, copy `SKILL.md`. It is recommended to include companion docs too:
 
 - `testing-playbook.md`
 - `loop-templates.md`
 - `cso-rules.md`
 
-Exemplo (ajuste `<REPO_PATH>`):
+Example (replace `<REPO_PATH>`):
 
 ```bash
 cp <REPO_PATH>/SKILL.md ~/.agents/skills/loop-test/SKILL.md
@@ -71,32 +71,28 @@ cp <REPO_PATH>/loop-templates.md ~/.agents/skills/loop-test/loop-templates.md
 cp <REPO_PATH>/cso-rules.md ~/.agents/skills/loop-test/cso-rules.md
 ```
 
-### 3) Verificar instalação
+### 3) Verify installation
 
 ```bash
 ls ~/.agents/skills/loop-test
 ```
 
-Você deve ver `SKILL.md` e os docs auxiliares.
+You should see `SKILL.md` and the companion docs.
 
-### 4) Uso no Code Agent
+### 4) Use it in Code Agent
 
-No prompt do agente, invoque a skill pelo nome:
+Invoke the skill by name in the agent prompt:
 
 - `$loop-test`
-- ou pedido explícito equivalente (ex.: "use loop-test para validar este bugfix")
+- or an explicit equivalent request (e.g. "use loop-test to validate this bugfix")
 
-## Compatibilidade
+## Compatibility
 
 - Codex / Code Agent: `~/.agents/skills/<skill-name>/SKILL.md`
 - Claude Code: `~/.claude/skills/<skill-name>/SKILL.md`
 
-## Segurança e privacidade
+## Security and privacy
 
-- Nunca registrar segredo/token/PII em logs, prompts, screenshots ou exemplos.
-- Sempre usar placeholders (`<API_TOKEN>`, `<TEST_ACCOUNT_EMAIL>`, `<PROJECT_PATH>`).
-- Nunca testar em canal real de cliente sem isolamento e aprovação explícita.
-
-## Licença
-
-Defina a licença do projeto (ex.: MIT) em `LICENSE`.
+- Never expose secrets/tokens/PII in logs, prompts, screenshots, or examples.
+- Always use placeholders (`<API_TOKEN>`, `<TEST_ACCOUNT_EMAIL>`, `<PROJECT_PATH>`).
+- Never test against real customer channels without isolation and explicit approval.
