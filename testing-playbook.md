@@ -19,7 +19,17 @@ RECOMMENDED:
 OPTIONAL:
 - Use automation to synchronize tracker state with command outputs.
 
-## 3) Test-level ladder (low cost -> high cost)
+## 3) Execution mode contract
+
+REQUIRED:
+- `interactive` mode: explicit matrix approval before the first scenario run.
+- `delegated` mode: acceptance criteria and scope must be locked before execution.
+- Record selected mode in the final report.
+
+RECOMMENDED:
+- Default to `interactive` when scope ambiguity exists.
+
+## 4) Test-level ladder (low cost -> high cost)
 
 1. Unit: pure logic/helpers.
 2. Service/integration: APIs, auth, data access, policies.
@@ -28,7 +38,7 @@ OPTIONAL:
 
 REQUIRED: never use a higher-cost level when a lower level can prove the same behavior.
 
-## 4) Pressure scenario contract (required fields)
+## 5) Pressure scenario contract (required fields)
 
 Every scenario spec MUST include:
 
@@ -48,7 +58,7 @@ REQUIRED:
 - explicit justification if test level changes
 - for feature validations, RED can be unmet acceptance criteria or negative-path proof
 
-## 5) Scenario baseline
+## 6) Scenario baseline
 
 RECOMMENDED candidates for every matrix:
 - golden path
@@ -61,7 +71,7 @@ RECOMMENDED candidates for every matrix:
 - external failures (timeout/5xx/network/rate limit)
 - malicious payload classes where relevant (XSS/SQLi/injection)
 
-## 6) Scenario checklist model
+## 7) Scenario checklist model
 
 REQUIRED states:
 - `pending`
@@ -77,7 +87,7 @@ REQUIRED execution rules:
 - if one fails, diagnose and fix root cause before moving on
 - never mark `passed` without successful rerun
 
-## 7) Escalation gates
+## 8) Escalation gates
 
 REQUIRED before starting:
 - max paid-test budget per session
@@ -90,7 +100,7 @@ REQUIRED stop conditions:
 - critical dependency unavailable beyond retry window
 - required credential/config missing and cannot be safely provisioned
 
-## 8) Acceptance rubric (objective)
+## 9) Acceptance rubric (objective)
 
 A loop-test execution is only valid when all REQUIRED checks pass:
 
@@ -104,7 +114,7 @@ A loop-test execution is only valid when all REQUIRED checks pass:
 
 REQUIRED release condition: all checks above pass, otherwise escalate.
 
-## 9) Anti-gaming checks (false GREEN prevention)
+## 10) Anti-gaming checks (false GREEN prevention)
 
 REQUIRED integrity checks:
 - Same scenario identity in RED and GREEN (`Scenario ID` unchanged).
@@ -120,7 +130,7 @@ REQUIRED invalidation triggers:
 
 If any invalidation trigger occurs, mark scenario `failed`, log anti-gaming violation, and restart from RED.
 
-## 10) Red flags
+## 11) Red flags
 
 | Thought | Reality |
 |---|---|

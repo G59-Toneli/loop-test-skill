@@ -37,10 +37,12 @@ REQUIRED: if any "do not use" condition is true, abort loop-test and pick a bett
 Input:
 - change summary
 - minimal context (spec/task/PR/files)
+- execution mode: `interactive` or `delegated`
 
 Mandatory intermediate output:
 - scenario matrix
-- explicit validation options: `approve`, `add`, `remove`, `edit`
+- explicit validation options: `approve`, `add`, `remove`, `edit` (interactive mode)
+- explicit acceptance criteria lock and scope lock (delegated mode)
 
 Mandatory final output:
 - `loop-test report` with method, scenarios, failures/fixes, escalations, and regression command(s)
@@ -50,7 +52,9 @@ Mandatory final output:
 1. Understand scope from code and task/spec.
 2. Choose the cheapest test level that can prove behavior.
 3. Build scenario matrix using `loop-templates.md`.
-4. Ask explicit user approval before running any scenario.
+4. Validate scenario matrix approval path:
+   - interactive mode: ask explicit user approval before running any scenario.
+   - delegated mode: lock acceptance criteria and proceed if scope is pre-approved.
 5. Execute sequentially and update scenario state immediately.
 6. If fail: diagnose root cause, fix, rerun the same scenario.
 7. After all approved scenarios pass, run full regression.
