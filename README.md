@@ -65,10 +65,45 @@ Use this skill when a change is already implemented and you need rigorous behavi
 - `loop-templates.md`: execution templates (RED, REFACTOR, checklist).
 - `loop-memory.md`: optional memory schema for cross-session non-regression scenarios.
 - `cso-rules.md`: description/naming standards and token-efficiency rules.
-- `SKILL_EVOLUTION.md`: skill evolution history.
 - `SKILL_VALIDATION.md`: empirical baseline vs compliance validation log.
 
-## Install this skill in Code Agent (Codex)
+## Install via npx (recommended)
+
+Run from GitHub repository:
+
+```bash
+npx github:G59-Toneli/loop-test-skill
+```
+
+Common variants:
+
+```bash
+# install for both Codex and Claude Code
+npx github:G59-Toneli/loop-test-skill --agent both
+
+# install for Claude Code only
+npx github:G59-Toneli/loop-test-skill --agent claude
+
+# preview actions without writing files
+npx github:G59-Toneli/loop-test-skill --agent both --dry-run
+
+# overwrite existing files
+npx github:G59-Toneli/loop-test-skill --force
+```
+
+By default:
+- Codex target: `~/.agents/skills/loop-test`
+- Claude Code target: `~/.claude/skills/loop-test`
+
+After publishing this package to npm, the shorter command is:
+
+```bash
+npx loop-test-skill
+```
+
+## Manual install (fallback)
+
+Install this skill in Code Agent (Codex):
 
 ### 1) Create the skill directory
 
