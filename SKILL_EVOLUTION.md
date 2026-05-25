@@ -247,3 +247,17 @@ Impact:
 - Lower risk of malformed descriptions reducing recall quality.
 Follow-ups:
 - Add optional lint script for frontmatter validation.
+
+Date: 2026-05-25
+Version/Tag: v1-doc-hardening-14
+Type: fix
+Summary: Corrected compatibility-location history after core slimming
+Context: Evolution log still implied compatibility guidance lived in SKILL.md, but core slimming moved it to README.
+Change:
+- Clarified compatibility guidance is maintained in README for install/runtime paths.
+- Kept SKILL.md focused on execution contract and binary gates.
+Impact:
+- Historical log now matches current document ownership.
+- Reduced risk of reviewers searching for compatibility rules in the wrong file.
+Follow-ups:
+- Keep evolution entries aligned with file ownership whenever content is moved.
