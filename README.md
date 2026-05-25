@@ -2,6 +2,20 @@
 
 Public skill for deterministic validation of feature, bugfix, and refactor changes through a **fix -> test -> fix** loop, with scenario control, anti-flaky checks, and decision-ready output.
 
+## Quick install
+
+```bash
+npm install -g loop-test-skill
+```
+
+```bash
+loop-test-skill --agent both --force
+```
+
+Use in agent prompt:
+- `$loop-test`
+- `/loop-test auto`
+
 ## What this skill solves
 
 - Prevents false green results (tests passing while bugs are masked).
@@ -67,39 +81,33 @@ Use this skill when a change is already implemented and you need rigorous behavi
 - `cso-rules.md`: description/naming standards and token-efficiency rules.
 - `SKILL_VALIDATION.md`: empirical baseline vs compliance validation log.
 
-## Install via npx (recommended)
+## Install alternatives
 
-Run from GitHub repository:
+Run directly with npx (without global install):
 
 ```bash
-npx github:G59-Toneli/loop-test-skill
+npx loop-test-skill
 ```
 
 Common variants:
 
 ```bash
 # install for both Codex and Claude Code
-npx github:G59-Toneli/loop-test-skill --agent both
+npx loop-test-skill --agent both
 
 # install for Claude Code only
-npx github:G59-Toneli/loop-test-skill --agent claude
+npx loop-test-skill --agent claude
 
 # preview actions without writing files
-npx github:G59-Toneli/loop-test-skill --agent both --dry-run
+npx loop-test-skill --agent both --dry-run
 
 # overwrite existing files
-npx github:G59-Toneli/loop-test-skill --force
+npx loop-test-skill --force
 ```
 
 By default:
 - Codex target: `~/.agents/skills/loop-test`
 - Claude Code target: `~/.claude/skills/loop-test`
-
-After publishing this package to npm, the shorter command is:
-
-```bash
-npx loop-test-skill
-```
 
 ## Manual install (fallback)
 
