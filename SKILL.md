@@ -80,6 +80,7 @@ REQUIRED final output:
 
 - `testing-playbook.md` for test-level choice, scenario model, and escalation details.
 - `cso-rules.md` for discovery, naming, and token-efficiency rules.
+- `loop-templates.md` for copy/paste execution templates.
 
 ## 10) Security and privacy
 

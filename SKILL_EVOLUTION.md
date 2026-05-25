@@ -172,3 +172,18 @@ Impact:
 - Preserves auditability without coupling to one tool.
 Follow-ups:
 - Add ready-to-use templates for RED logs and refactor evidence.
+
+Date: 2026-05-25
+Version/Tag: v1-doc-hardening-09
+Type: change
+Summary: Added copy-paste operational templates
+Context: Execution speed suffered because users had to invent log/checklist formats each run.
+Change:
+- Added loop-templates.md with RED scenario template.
+- Added rationalization log and REFACTOR evidence templates.
+- Added final checklist template and linked it from SKILL.md.
+Impact:
+- Faster and more consistent loop execution.
+- Better evidence quality for audits and reviews.
+Follow-ups:
+- Add anti-gaming rules to prevent false GREEN outcomes.
