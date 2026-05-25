@@ -1,8 +1,3 @@
----
-name: loop-test
-description: Use when a feature, bugfix, or refactor needs deterministic end-to-end validation through an iterative fix-test-fix loop with explicit scenario approval and escalation controls.
----
-
 # loop-test
 
 ## Principle
@@ -46,56 +41,10 @@ Required final output:
 8. Run full regression after all scenarios pass.
 9. Publish final structured report.
 
-## Test-level ladder
+## Quick references
 
-1. Unit: pure logic/helpers.
-2. Service/integration: APIs, auth, data access, policies.
-3. End-to-end: user journeys crossing boundaries.
-4. Real external dependency: only when mocks hide behavior.
-
-Never use a higher-cost level when a lower level proves the same behavior.
-
-## Scenario baseline
-
-Always consider:
-- golden path
-- empty/null/undefined inputs
-- boundary values
-- unicode/special chars
-- concurrency/race conditions
-- authorization boundaries
-- idempotency/retries/duplicates
-- external failures (timeout/5xx/network/rate limit)
-- malicious payload classes when relevant (XSS/SQLi/injection)
-
-## Checklist state model
-
-Allowed states:
-- `pending`
-- `running`
-- `passed`
-- `failed`
-- `blocked`
-- `skipped-with-reason`
-
-Rules:
-- execute scenarios sequentially
-- mark status immediately
-- if failed, resolve root cause before moving on
-- never mark `passed` without successful rerun
-
-## Escalation gates
-
-Define before starting:
-- max paid-test budget per session
-- max no-progress iterations per scenario
-
-Escalate/stop when:
-- no measurable progress after max iterations
-- paid budget reached
-- fix requires product/spec decision
-- critical dependency unavailable beyond retry window
-- required credential/config missing and cannot be safely provisioned
+- Test level selection and scenario execution details: `testing-playbook.md`
+- Discovery, naming, and search optimization rules: `cso-rules.md`
 
 ## Security and privacy
 
@@ -103,16 +52,6 @@ Escalate/stop when:
 - Use placeholders (`<TEST_ACCOUNT_EMAIL>`, `<API_TOKEN>`, `<PROJECT_PATH>`).
 - Never hit real customer channels in test mode without explicit approval and isolation.
 - Avoid sensitive data in logs, artifacts, and screenshots.
-
-## Red flags
-
-| Thought | Reality |
-|---|---|
-| "I'll just add `.skip`" | Hides bug, no root-cause fix. |
-| "I'll add hard sleep" | Masks race condition, increases flakiness. |
-| "I'll lower assertion strength" | Creates false green. |
-| "Passed once, done" | Must rerun to confirm determinism. |
-| "I'll raise budget ad hoc" | Breaks control; escalate instead. |
 
 ## Report template
 
@@ -132,7 +71,3 @@ Open/escalated items:
 Regression command(s):
   - <command>
 ```
-
-## Integrations
-
-Pairs well with root-cause debugging, test-construction, and verification/commit workflow skills.
