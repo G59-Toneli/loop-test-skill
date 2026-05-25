@@ -57,7 +57,21 @@ REQUIRED stop conditions:
 - critical dependency unavailable beyond retry window
 - required credential/config missing and cannot be safely provisioned
 
-## 6) Red flags
+## 6) Acceptance rubric (objective)
+
+A loop-test execution is only valid when all REQUIRED checks pass:
+
+| Check | Rule | Evidence |
+|---|---|---|
+| RED baseline | At least one failing scenario is captured before fix | failing command output + scenario state `failed` |
+| GREEN validation | Same scenario passes after fix | successful rerun command output + state `passed` |
+| REFACTOR closure | Root cause documented, not symptom patch | loop diary hypothesis/change/result fields filled |
+| Scenario completeness | Every approved scenario ends with terminal state | no scenario left in `pending` or `running` |
+| Final regression | Full regression runs after all scenario passes | regression command + result in final report |
+
+REQUIRED release condition: all checks above pass, otherwise escalate.
+
+## 7) Red flags
 
 | Thought | Reality |
 |---|---|

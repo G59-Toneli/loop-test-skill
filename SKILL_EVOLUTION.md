@@ -112,3 +112,18 @@ Impact:
 - Lower misread risk from structural inconsistency.
 Follow-ups:
 - Add measurable acceptance rubric tied to sectioned flow.
+
+Date: 2026-05-25
+Version/Tag: v1-doc-hardening-05
+Type: change
+Summary: Added objective acceptance rubric for loop validity
+Context: "Bulletproof" quality was subjective without measurable pass/fail criteria.
+Change:
+- Added RED/GREEN/REFACTOR acceptance checks with required evidence.
+- Defined terminal-state and full-regression proof requirements.
+- Added explicit release condition gating based on rubric completion.
+Impact:
+- Verification became auditable and binary.
+- Lower chance of false-positive "done" claims.
+Follow-ups:
+- Add anti-gaming checks for manipulated GREEN outcomes.
