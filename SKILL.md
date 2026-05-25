@@ -1,3 +1,8 @@
+---
+name: loop-test
+description: Use when a feature, bugfix, or refactor needs deterministic end-to-end validation through an iterative fix-test-fix loop with explicit scenario approval and escalation controls.
+---
+
 # loop-test
 
 ## Principle
@@ -6,7 +11,17 @@ Validate real behavior with the lowest possible cost, without masking bugs.
 
 Loop: scope -> choose test level -> propose scenarios -> user validates scenarios -> execute scenario -> if fail, fix root cause -> rerun -> close with regression.
 
-Never force green by weakening assertions, adding fake stabilizers, shrinking scope silently, or abusing skip/xfail.
+## Policy levels
+
+- REQUIRED: mandatory behavior. Violations invalidate execution quality.
+- RECOMMENDED: strong default. Deviate only with explicit reason.
+- OPTIONAL: situational enhancement.
+
+## REQUIRED rules
+
+- Never force green by weakening assertions, adding fake stabilizers, shrinking scope silently, or abusing skip/xfail.
+- Ask explicit user validation on the scenario matrix before execution.
+- Run full regression after all approved scenarios pass.
 
 ## When to use
 
@@ -22,11 +37,11 @@ Input:
 - change summary
 - minimal context (spec/task/PR/files)
 
-Required intermediate output:
+REQUIRED intermediate output:
 - scenario matrix
 - explicit user validation options: approve/add/remove/edit
 
-Required final output:
+REQUIRED final output:
 - `loop-test report` with test method, coverage, iterations, fixes, escalations, and regression command(s).
 
 ## Mandatory flow
@@ -48,10 +63,10 @@ Required final output:
 
 ## Security and privacy
 
-- Never expose secrets, tokens, credentials, PII, or private endpoints.
-- Use placeholders (`<TEST_ACCOUNT_EMAIL>`, `<API_TOKEN>`, `<PROJECT_PATH>`).
-- Never hit real customer channels in test mode without explicit approval and isolation.
-- Avoid sensitive data in logs, artifacts, and screenshots.
+- REQUIRED: never expose secrets, tokens, credentials, PII, or private endpoints.
+- REQUIRED: use placeholders (`<TEST_ACCOUNT_EMAIL>`, `<API_TOKEN>`, `<PROJECT_PATH>`).
+- REQUIRED: never hit real customer channels in test mode without explicit approval and isolation.
+- RECOMMENDED: avoid sensitive data in logs, artifacts, and screenshots.
 
 ## Report template
 

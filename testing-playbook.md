@@ -7,11 +7,11 @@
 3. End-to-end: user journeys crossing boundaries.
 4. Real external dependency: only when mocks hide behavior.
 
-Rule: never use a higher-cost level when a lower level can prove the same behavior.
+REQUIRED: never use a higher-cost level when a lower level can prove the same behavior.
 
 ## Scenario baseline
 
-Always evaluate:
+RECOMMENDED candidates for every matrix:
 - golden path
 - empty/null/undefined inputs
 - boundary values
@@ -24,7 +24,7 @@ Always evaluate:
 
 ## Scenario checklist model
 
-Allowed states:
+REQUIRED states:
 - `pending`
 - `running`
 - `passed`
@@ -32,7 +32,7 @@ Allowed states:
 - `blocked`
 - `skipped-with-reason`
 
-Execution rules:
+REQUIRED execution rules:
 - run scenarios sequentially
 - update state immediately after each run
 - if one fails, diagnose and fix root cause before moving on
@@ -40,11 +40,11 @@ Execution rules:
 
 ## Escalation gates
 
-Define before starting:
+REQUIRED before starting:
 - max paid-test budget per session
 - max no-progress iterations per scenario
 
-Escalate and stop when:
+REQUIRED stop conditions:
 - no measurable progress after max iterations
 - paid budget reached
 - fix requires product/spec decision

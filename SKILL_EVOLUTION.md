@@ -82,3 +82,18 @@ Impact:
 - Better maintainability via focused documents.
 Follow-ups:
 - Align README references to the new split.
+
+Date: 2026-05-25
+Version/Tag: v1-doc-hardening-03
+Type: change
+Summary: Standardized normative language with explicit policy levels
+Context: Mixed wording (must/important/critical) caused inconsistent interpretation.
+Change:
+- Added REQUIRED/RECOMMENDED/OPTIONAL policy taxonomy.
+- Applied policy labels across core and companion docs.
+- Converted implicit obligations into explicit REQUIRED statements.
+Impact:
+- Lower ambiguity in execution.
+- Easier compliance checks during review.
+Follow-ups:
+- Add objective acceptance rubric mapped to REQUIRED rules.
