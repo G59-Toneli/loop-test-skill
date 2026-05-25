@@ -157,3 +157,18 @@ Impact:
 - Lower risk of environment-specific instruction failure.
 Follow-ups:
 - Replace tool-specific task tracking dependency with tool-agnostic rule.
+
+Date: 2026-05-25
+Version/Tag: v1-doc-hardening-08
+Type: change
+Summary: Replaced tool-specific tracking expectation with tool-agnostic contract
+Context: Task tracking guidance must work across agents and environments.
+Change:
+- Added session tracking contract independent of any specific tool.
+- Required state/evidence updates in whichever tracker is available.
+- Kept environment-native tracker usage as recommended, not mandatory.
+Impact:
+- Higher portability and less brittle execution.
+- Preserves auditability without coupling to one tool.
+Follow-ups:
+- Add ready-to-use templates for RED logs and refactor evidence.

@@ -6,7 +6,20 @@
 - RECOMMENDED: default behavior when context allows.
 - OPTIONAL: situational enhancement.
 
-## 2) Test-level ladder (low cost -> high cost)
+## 2) Session tracking contract
+
+REQUIRED:
+- Track scenario progress in a session task tracker (checklist, table, or todo system).
+- Update tracker state immediately after each scenario run.
+- Keep evidence links/commands attached to each state transition.
+
+RECOMMENDED:
+- Use the environment-native tracker when available.
+
+OPTIONAL:
+- Use automation to synchronize tracker state with command outputs.
+
+## 3) Test-level ladder (low cost -> high cost)
 
 1. Unit: pure logic/helpers.
 2. Service/integration: APIs, auth, data access, policies.
@@ -15,7 +28,7 @@
 
 REQUIRED: never use a higher-cost level when a lower level can prove the same behavior.
 
-## 3) Scenario baseline
+## 4) Scenario baseline
 
 RECOMMENDED candidates for every matrix:
 - golden path
@@ -28,7 +41,7 @@ RECOMMENDED candidates for every matrix:
 - external failures (timeout/5xx/network/rate limit)
 - malicious payload classes where relevant (XSS/SQLi/injection)
 
-## 4) Scenario checklist model
+## 5) Scenario checklist model
 
 REQUIRED states:
 - `pending`
@@ -44,7 +57,7 @@ REQUIRED execution rules:
 - if one fails, diagnose and fix root cause before moving on
 - never mark `passed` without successful rerun
 
-## 5) Escalation gates
+## 6) Escalation gates
 
 REQUIRED before starting:
 - max paid-test budget per session
@@ -57,7 +70,7 @@ REQUIRED stop conditions:
 - critical dependency unavailable beyond retry window
 - required credential/config missing and cannot be safely provisioned
 
-## 6) Acceptance rubric (objective)
+## 7) Acceptance rubric (objective)
 
 A loop-test execution is only valid when all REQUIRED checks pass:
 
@@ -71,7 +84,7 @@ A loop-test execution is only valid when all REQUIRED checks pass:
 
 REQUIRED release condition: all checks above pass, otherwise escalate.
 
-## 7) Red flags
+## 8) Red flags
 
 | Thought | Reality |
 |---|---|
