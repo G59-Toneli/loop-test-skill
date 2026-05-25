@@ -93,7 +93,9 @@ REQUIRED: if any gate fails, mark execution invalid and escalate.
 ## loop-test report
 
 Feature: <name>
+Execution mode: <interactive | delegated>
 Method selected: <test level>
+Regression tier: <targeted | suite | full>
 Scenarios approved: <N>
 Scenarios result: <P passed, F fixed, B blocked/escalated>
 Total iterations: <X>
