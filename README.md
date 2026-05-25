@@ -8,7 +8,7 @@ Public skill for deterministic validation of feature, bugfix, and refactor chang
 npm install -g loop-test-skill
 ```
 
-Global install now auto-activates the skill for Codex by default (`~/.agents/skills/loop-test`).
+Global install now auto-activates the skill for Codex and Claude by default (`~/.agents/skills/loop-test` and `~/.claude/skills/loop-test`).
 
 ```bash
 loop-test-skill --agent both --force
@@ -183,3 +183,4 @@ Invoke the skill by name in the agent prompt:
 - Never expose secrets/tokens/PII in logs, prompts, screenshots, or examples.
 - Always use placeholders (`<API_TOKEN>`, `<TEST_ACCOUNT_EMAIL>`, `<PROJECT_PATH>`).
 - Never test against real customer channels without isolation and explicit approval.
+

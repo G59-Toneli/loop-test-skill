@@ -15,7 +15,7 @@ function shouldSkip() {
 
 function runInstaller() {
   const installer = path.resolve(__dirname, "..", "bin", "install-loop-test.js");
-  const args = [installer, "--agent", "codex", "--force"];
+  const args = [installer, "--agent", "both", "--force"];
   const result = spawnSync(process.execPath, args, { stdio: "inherit" });
 
   if (result.error) {
