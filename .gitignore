@@ -1,2 +1,4 @@
 # Keep tracked to preserve public audit trail.
 # Add local-only patterns below when needed.
+readme-generator
+SKILL_EVOLUTION.md

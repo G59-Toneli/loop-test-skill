@@ -202,3 +202,48 @@ Impact:
 - Reduced risk of manufactured pass results.
 Follow-ups:
 - Periodically sample loop reports to audit anti-gaming compliance.
+
+Date: 2026-05-25
+Version/Tag: v1-doc-hardening-11
+Type: refactor
+Summary: Slimmed core SKILL into fast contract + binary DoD gates
+Context: Core document still carried too much operational detail for a frequently loaded skill.
+Change:
+- Rewrote SKILL.md as compact contract focused on triggers, flow, and completion gates.
+- Added explicit binary Definition of Done section in core skill.
+- Kept deep mechanics delegated to companion docs.
+Impact:
+- Faster first-pass scanning with less ambiguity.
+- Clearer pass/fail boundary for loop-test validity.
+Follow-ups:
+- Periodically re-check token size as new rules are added.
+
+Date: 2026-05-25
+Version/Tag: v1-doc-hardening-12
+Type: change
+Summary: Introduced structured pressure-scenario contract
+Context: Scenario quality varied because required fields were implicit.
+Change:
+- Added required pressure-scenario fields in testing-playbook.
+- Added copy-paste pressure scenario spec template in loop-templates.
+- Added RED/GREEN invariants with stable scenario identity requirements.
+Impact:
+- More consistent scenario construction and auditability.
+- Lower chance of false-green via scenario drift.
+Follow-ups:
+- Add sampled validations of filled templates in real runs.
+
+Date: 2026-05-25
+Version/Tag: v1-doc-hardening-13
+Type: change
+Summary: Tightened CSO publish checks and reference discipline
+Context: Discovery guidance lacked objective pre-publish checks.
+Change:
+- Added frontmatter hard checks to cso-rules.
+- Standardized non-eager cross-reference guidance.
+- Updated README with scenario identity and DoD summary.
+Impact:
+- Better consistency between skill body and discoverability metadata.
+- Lower risk of malformed descriptions reducing recall quality.
+Follow-ups:
+- Add optional lint script for frontmatter validation.

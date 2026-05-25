@@ -20,6 +20,11 @@ Good:
 Bad:
 - `Use when validating changes by choosing method, creating scenarios, and iterating through failures.`
 
+RECOMMENDED hard check (publish gate):
+- `name` and `description` exist in frontmatter
+- description length <= 500 chars
+- total frontmatter <= 1024 chars
+
 ## 3) Naming standard
 
 REQUIRED:
@@ -50,4 +55,8 @@ RECOMMENDED:
 When another skill is mandatory, write explicitly:
 - `REQUIRED SUB-SKILL: <skill-name>`
 
-RECOMMENDED: avoid force-loading unrelated files or long inline references.
+REQUIRED:
+- avoid force-loading references in body text
+- prefer plain references like `testing-playbook.md` over eager-load syntaxes
+
+RECOMMENDED: avoid long inline references when one pointer is enough.
