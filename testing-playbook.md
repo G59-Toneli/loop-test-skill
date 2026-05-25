@@ -94,6 +94,10 @@ REQUIRED before starting:
 - max no-progress iterations per scenario
 - regression tier selected (`targeted`, `suite`, `full`) with justification
 
+REQUIRED defaults when not provided by user/spec:
+- `max_no_progress_iterations_per_scenario = 2`
+- `max_paid_test_budget_per_session = 0` (no paid test by default)
+
 REQUIRED stop conditions:
 - no measurable progress after max iterations
 - paid budget reached
