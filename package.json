@@ -1,13 +1,17 @@
 {
   "name": "loop-test-skill",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Install the loop-test skill for Codex and Claude Code",
   "license": "MIT",
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js"
+  },
   "bin": {
     "loop-test-skill": "bin/install-loop-test.js"
   },
   "files": [
     "bin/install-loop-test.js",
+    "scripts/postinstall.js",
     "SKILL.md",
     "README.md",
     "testing-playbook.md",

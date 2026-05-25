@@ -8,6 +8,8 @@ Public skill for deterministic validation of feature, bugfix, and refactor chang
 npm install -g loop-test-skill
 ```
 
+Global install now auto-activates the skill for Codex by default (`~/.agents/skills/loop-test`).
+
 ```bash
 loop-test-skill --agent both --force
 ```
