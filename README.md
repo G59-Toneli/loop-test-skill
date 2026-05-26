@@ -177,10 +177,3 @@ Invoke the skill by name in the agent prompt:
 
 - Codex / Code Agent: `~/.agents/skills/<skill-name>/SKILL.md`
 - Claude Code: `~/.claude/skills/<skill-name>/SKILL.md`
-
-## Security and privacy
-
-- Never expose secrets/tokens/PII in logs, prompts, screenshots, or examples.
-- Always use placeholders (`<API_TOKEN>`, `<TEST_ACCOUNT_EMAIL>`, `<PROJECT_PATH>`).
-- Never test against real customer channels without isolation and explicit approval.
-
